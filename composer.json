@@ -1,0 +1,29 @@
+{
+  "name": "randock/visa-center-api",
+  "description": "Randock Visa Center Api",
+  "type": "library",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "Randock\\VisaCenterApi\\": "src/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "platform": {
+      "php": "7.1"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "guzzlehttp/guzzle": "^6.3",
+
+    "randock/value-object": "dev-develop",
+    "randock/utils": "dev-develop"
+
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.4"
+  }
+}

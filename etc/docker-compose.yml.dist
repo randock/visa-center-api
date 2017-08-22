@@ -1,0 +1,9 @@
+version: '2'
+services:
+  fpm:
+    build: etc/docker/development/fpm
+    ports:
+      - "2222:22"
+    volumes:
+      - $PWD:/app
+    working_dir: /app
