@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
-use Psr\Http\Message\ResponseInterface;
 use Randock\VisaCenterApi\Model\VisaCenterTransaction;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Randock\VisaCenterApi\Model\Definition\VisaCenterTransactionInterface;
@@ -44,10 +43,17 @@ class TransactionClient extends AbstractClient
      *
      * @return VisaCenterTransactionInterface
      */
-    public function getByResource(string $resource): VisaCenterTransactionInterface
+    private function getByResource(string $resource): VisaCenterTransactionInterface
     {
         try {
-            return VisaCenterTransaction::fromStdClass($this->toStdClass($this->request('GET', $resource)));
+            return VisaCenterTransaction::fromStdClass(
+                $this->toStdClass(
+                    $this->request(
+                        'GET',
+                        $resource
+                    )
+                )
+            );
         } catch (HttpException $e) {
             throw new VisaCenterTransactionNotFoundException();
         }
@@ -74,7 +80,9 @@ class TransactionClient extends AbstractClient
                     'json' => $transactionData
                 ]
             );
-            $transactionUrlVisaCenter = parse_url($transactionResource->getHeaders()['Location'][0]);
+            $transactionUrlVisaCenter = parse_url(
+                $transactionResource->getHeaders()['Location'][0]
+            );
 
             return $this->getByResource($transactionUrlVisaCenter['path']);
         } catch (HttpException $e) {
@@ -94,7 +102,21 @@ class TransactionClient extends AbstractClient
     public function patch(string $orderUuid, string $transactionUuid, array $transactionData): VisaCenterTransactionInterface
     {
         try {
-            return VisaCenterTransaction::fromStdClass($this->toStdClass($this->request('PATCH', sprintf('/api/orders/%s/transactions/%s.json', $orderUuid, $transactionUuid), ['json' => $transactionData])));
+            return VisaCenterTransaction::fromStdClass(
+                $this->toStdClass(
+                    $this->request(
+                        'PATCH',
+                        sprintf(
+                            '/api/orders/%s/transactions/%s.json',
+                            $orderUuid,
+                            $transactionUuid
+                        ),
+                        [
+                            'json' => $transactionData
+                        ]
+                    )
+                )
+            );
         } catch (HttpException $e) {
             throw new VisaCenterTransactionCanNotBeUpdatedException();
         }

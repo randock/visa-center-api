@@ -8,6 +8,9 @@ use Randock\VisaCenterApi\CollectionApiResponse;
 
 class VisaTypeClient extends AbstractClient
 {
+    /**
+     * @var string
+     */
     public const VISA_TYPE_DEFAULT_URI = '/api/visatypes.json';
 
     /**
