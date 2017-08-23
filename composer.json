@@ -17,8 +17,6 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "guzzlehttp/guzzle": "^6.3",
-
     "randock/value-object": "dev-develop",
     "randock/utils": "dev-develop"
 

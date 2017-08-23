@@ -9,26 +9,6 @@ use Randock\VisaCenterApi\CollectionApiResponse;
 class VisaTypeClient extends AbstractClient
 {
     /**
-     * @var string
-     */
-    public const VISA_TYPE_DEFAULT_URI = '/api/visatypes.json';
-
-    /**
-     * @param string $link
-     *
-     * @return mixed
-     */
-    public function requestLink(string $link)
-    {
-        return json_decode(
-            $this->request(
-                'GET',
-                $link
-            )->getBody()->getContents()
-        );
-    }
-
-    /**
      * @param int   $page
      * @param int   $limit
      * @param bool  $fetchMore
@@ -39,27 +19,26 @@ class VisaTypeClient extends AbstractClient
     public function getVisaTypes(int $page = 1, int $limit = 20, bool $fetchMore = false, $queryParams = []): CollectionApiResponse
     {
         $options = [
-            'query' =>
-                [
+            'query' => [
                     'page' => $page,
                     'limit' => $limit,
                     'orderParameter' => [
-                        'updatedAt'
+                        'updatedAt',
                     ],
                     'orderValue' => [
-                        'ASC'
-                    ]
-                ]
+                        'ASC',
+                    ],
+                ],
         ];
 
         $options['query'] = array_merge($options['query'], $queryParams);
         $response = new CollectionApiResponse(
-            json_decode(
+            $this->toStdClass(
                 $this->request(
                     'GET',
-                    self::VISA_TYPE_DEFAULT_URI,
+                    '/api/visatypes.json',
                     $options
-                )->getBody()->getContents()
+                )
             ),
             $this,
             $fetchMore

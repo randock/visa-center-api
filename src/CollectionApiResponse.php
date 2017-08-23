@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi;
 
-use Randock\VisaCenterApi\Client\VisaTypeClient;
+use Randock\VisaCenterApi\Client\AbstractClient;
 
-class CollectionApiResponse extends VisaCenterApiClientResponse implements \Iterator
+class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
 {
     /**
-     * @var VisaTypeClient
+     * @var AbstractClient
      */
-    private $visaTypeClient;
+    private $client;
 
     /**
      * @var bool
@@ -22,16 +22,16 @@ class CollectionApiResponse extends VisaCenterApiClientResponse implements \Iter
      * CollectionApiResponse constructor.
      *
      * @param \stdClass      $data
-     * @param VisaTypeClient $visaTypeClient
+     * @param AbstractClient $client
      * @param bool           $fetchMore
      */
     public function __construct(
         \stdClass $data,
-        VisaTypeClient $visaTypeClient,
+        AbstractClient $client,
         bool $fetchMore
 ) {
         parent::__construct($data);
-        $this->visaTypeClient = $visaTypeClient;
+        $this->client = $client;
         $this->fetchMore = $fetchMore;
     }
 
@@ -99,7 +99,7 @@ class CollectionApiResponse extends VisaCenterApiClientResponse implements \Iter
     {
         if (!next($this->responseData->_embedded->items) && $this->fetchMore) {
             if ($this->getPage() < $this->getPages()) {
-                $this->responseData = $this->visaTypeClient->requestLink($this->getLinks()->next->href);
+                $this->responseData = $this->client->requestLink($this->getLinks()->next->href);
                 $this->rewind();
             }
         }

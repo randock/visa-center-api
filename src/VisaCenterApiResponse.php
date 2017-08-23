@@ -6,7 +6,7 @@ namespace Randock\VisaCenterApi;
 
 use Randock\VisaCenterApi\Exception\InvalidMagicCallException;
 
-class VisaCenterApiClientResponse
+class VisaCenterApiResponse
 {
     /**
      * @var \stdClass

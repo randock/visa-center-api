@@ -36,6 +36,21 @@ abstract class AbstractClient extends CommonAbstractClient
     }
 
     /**
+     * @param string $link
+     *
+     * @return mixed
+     */
+    public function requestLink(string $link)
+    {
+        return json_decode(
+            $this->request(
+                'GET',
+                $link
+            )->getBody()->getContents()
+        );
+    }
+
+    /**
      * @param ResponseInterface $response
      *
      * @return \stdClass
@@ -44,5 +59,4 @@ abstract class AbstractClient extends CommonAbstractClient
     {
         return json_decode($response->getBody()->getContents());
     }
-
 }

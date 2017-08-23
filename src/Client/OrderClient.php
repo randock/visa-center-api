@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
+use Randock\VisaCenterApi\CollectionApiResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderContainsErrorsException;
@@ -19,12 +20,47 @@ class OrderClient extends AbstractClient
      */
     public function getOrderSchemaForm(string $visaFormUri): \stdClass
     {
-        return json_decode(
+        return $this->toStdClass(
             $this->request(
                 'GET',
                 $visaFormUri
-            )->getBody()->getContents()
+            )
         );
+    }
+
+    /**
+     * @param int   $page
+     * @param int   $limit
+     * @param bool  $fetchMore
+     * @param array $queryParams
+     *
+     * @return CollectionApiResponse
+     */
+    public function getOrders(int $page = 1, int $limit = 20, bool $fetchMore = false, $queryParams = []): CollectionApiResponse
+    {
+        $options = [
+            'query' =>
+                [
+                    'page' => $page,
+                    'limit' => $limit
+                ]
+        ];
+
+        $options['query'] = array_merge($options['query'], $queryParams);
+
+        $response = new CollectionApiResponse(
+            $this->toStdClass(
+                $this->request(
+                    'GET',
+                    '/api/orders.json',
+                    $options
+                )
+            ),
+            $this,
+            $fetchMore
+        );
+
+        return $response;
     }
 
     /**
@@ -37,14 +73,14 @@ class OrderClient extends AbstractClient
     public function getOrder(string $orderUuid): \stdClass
     {
         try {
-            return json_decode(
+            return $this->toStdClass(
                 $this->request(
                     'GET',
                     sprintf(
                         '/api/orders/%s.json',
                         $orderUuid
                     )
-                )->getBody()->getContents()
+                )
             );
         } catch (HttpException $e) {
             throw new OrderNotFoundException();
@@ -69,8 +105,8 @@ class OrderClient extends AbstractClient
                     'json' => $order['order'],
                     'query' => [
                         'locale' => $order['locale'],
-                        'visaType' => $order['visaTypeId']
-                    ]
+                        'visaType' => $order['visaTypeId'],
+                    ],
                 ]
             );
 

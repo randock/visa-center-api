@@ -37,29 +37,6 @@ class TransactionClient extends AbstractClient
     }
 
     /**
-     * @param string $resource
-     *
-     * @throws VisaCenterTransactionNotFoundException
-     *
-     * @return VisaCenterTransactionInterface
-     */
-    private function getByResource(string $resource): VisaCenterTransactionInterface
-    {
-        try {
-            return VisaCenterTransaction::fromStdClass(
-                $this->toStdClass(
-                    $this->request(
-                        'GET',
-                        $resource
-                    )
-                )
-            );
-        } catch (HttpException $e) {
-            throw new VisaCenterTransactionNotFoundException();
-        }
-    }
-
-    /**
      * @param string $orderUuid
      * @param array  $transactionData
      *
@@ -77,7 +54,7 @@ class TransactionClient extends AbstractClient
                     $orderUuid
                 ),
                 [
-                    'json' => $transactionData
+                    'json' => $transactionData,
                 ]
             );
             $transactionUrlVisaCenter = parse_url(
@@ -112,7 +89,7 @@ class TransactionClient extends AbstractClient
                             $transactionUuid
                         ),
                         [
-                            'json' => $transactionData
+                            'json' => $transactionData,
                         ]
                     )
                 )
@@ -122,4 +99,26 @@ class TransactionClient extends AbstractClient
         }
     }
 
+    /**
+     * @param string $resource
+     *
+     * @throws VisaCenterTransactionNotFoundException
+     *
+     * @return VisaCenterTransactionInterface
+     */
+    private function getByResource(string $resource): VisaCenterTransactionInterface
+    {
+        try {
+            return VisaCenterTransaction::fromStdClass(
+                $this->toStdClass(
+                    $this->request(
+                        'GET',
+                        $resource
+                    )
+                )
+            );
+        } catch (HttpException $e) {
+            throw new VisaCenterTransactionNotFoundException();
+        }
+    }
 }
