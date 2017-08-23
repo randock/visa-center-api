@@ -144,4 +144,12 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
     {
         reset($this->responseData->_embedded->items);
     }
+
+    /**
+     * @return array
+     */
+    public function __toArray()
+    {
+        return $this->responseData->_embedded->items;
+    }
 }
