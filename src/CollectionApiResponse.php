@@ -36,6 +36,14 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
     }
 
     /**
+     * @return array
+     */
+    public function __toArray()
+    {
+        return $this->responseData->_embedded->items;
+    }
+
+    /**
      * @return mixed
      */
     public function getLinks()
@@ -143,13 +151,5 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
     public function rewind(): void
     {
         reset($this->responseData->_embedded->items);
-    }
-
-    /**
-     * @return array
-     */
-    public function __toArray()
-    {
-        return $this->responseData->_embedded->items;
     }
 }

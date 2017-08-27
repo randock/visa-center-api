@@ -42,11 +42,11 @@ abstract class AbstractClient extends CommonAbstractClient
      */
     public function requestLink(string $link)
     {
-        return json_decode(
+        return $this->toStdClass(
             $this->request(
                 'GET',
                 $link
-            )->getBody()->getContents()
+            )
         );
     }
 

@@ -9,6 +9,7 @@ use Randock\VisaCenterApi\CollectionApiResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderContainsErrorsException;
+use Randock\VisaCenterApi\Exception\OrderCommentContainsErrorException;
 use Randock\VisaCenterApi\Exception\VisaCenterGetOrderFatalErrorException;
 
 class OrderClient extends AbstractClient
@@ -39,11 +40,10 @@ class OrderClient extends AbstractClient
     public function getOrders(int $page = 1, int $limit = 20, bool $fetchMore = false, $queryParams = []): CollectionApiResponse
     {
         $options = [
-            'query' =>
-                [
+            'query' => [
                     'page' => $page,
-                    'limit' => $limit
-                ]
+                    'limit' => $limit,
+                ],
         ];
 
         $options['query'] = array_merge($options['query'], $queryParams);
@@ -84,6 +84,84 @@ class OrderClient extends AbstractClient
             );
         } catch (HttpException $e) {
             throw new OrderNotFoundException();
+        }
+    }
+
+    /**
+     * @param string $orderUuid
+     * @param int    $page
+     * @param int    $limit
+     * @param array  $sort
+     * @param bool   $fetchMore
+     *
+     * @throws OrderNotFoundException
+     *
+     * @return CollectionApiResponse
+     */
+    public function getOrderComments(string $orderUuid, int $page = 1, int $limit = 20, array $sort = [], bool $fetchMore = false): CollectionApiResponse
+    {
+        $options = [
+            'query' => [
+                    'page' => $page,
+                    'limit' => $limit,
+                    'orderParameter' => key($sort),
+                    'orderValue' => current($sort),
+                ],
+        ];
+
+        try {
+            return new CollectionApiResponse(
+                $this->toStdClass(
+                    $this->request(
+                        'GET',
+                        sprintf(
+                            '/api/orders/%s/comments.json',
+                            $orderUuid,
+                            $options
+                        )
+                    )
+                ),
+                $this,
+                $fetchMore
+            );
+        } catch (HttpException $e) {
+            throw new OrderNotFoundException();
+        }
+    }
+
+    /**
+     * @param string $uuid
+     * @param string $longMessage
+     *
+     * @return string
+     */
+    public function createOrderComment(string $uuid, string $type, string $message = null, string $longMessage = null): string
+    {
+        try {
+            $response = $this->request(
+                'POST',
+                sprintf(
+                    '/api/orders/%s/comments.json',
+                    $uuid
+                ),
+                [
+                    'json' => [
+                        'type' => $type,
+                        'message' => $message,
+                        'longMessage' => $longMessage
+                    ],
+                ]
+            );
+
+            return $this->requestLink($response->getHeader('Location')[0]);
+        } catch (HttpException $e) {
+            if ($e->getStatusCode() === 404) {
+                throw new OrderNotFoundException();
+            } elseif ($e->getStatusCode() === 400) {
+                throw new OrderCommentContainsErrorException(
+                    $e->getMessage()
+                );
+            }
         }
     }
 
