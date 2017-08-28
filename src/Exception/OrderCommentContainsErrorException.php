@@ -7,24 +7,25 @@ namespace Randock\VisaCenterApi\Exception;
 class OrderCommentContainsErrorException extends \Exception
 {
     /**
-     * @var string
+     * @var string[]
      */
     private $errors;
 
     /**
      * OrderCommentContainsErrorException constructor.
      */
-    public function __construct(string $errors)
+    public function __construct(array $errors)
     {
         parent::__construct(
             'randock.visa_center_api.exception.order_comment_contains_error'
         );
+        $this->errors = $errors;
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getErrors(): string
+    public function getErrors(): array
     {
         return $this->errors;
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
+use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderContainsErrorsException;
 use Randock\VisaCenterApi\Exception\OrderCommentContainsErrorException;
@@ -37,13 +37,15 @@ class OrderClient extends AbstractClient
      *
      * @return CollectionApiResponse
      */
-    public function getOrders(int $page = 1, int $limit = 20, bool $fetchMore = false, $queryParams = []): CollectionApiResponse
+    public function getOrders(int $page = 1, int $limit = 20, array $sort = [], bool $fetchMore = false, $queryParams = []): CollectionApiResponse
     {
         $options = [
             'query' => [
-                    'page' => $page,
-                    'limit' => $limit,
-                ],
+                'page' => $page,
+                'limit' => $limit,
+                'orderParameter' => array_keys($sort),
+                'orderValue' => array_values($sort),
+            ],
         ];
 
         $options['query'] = array_merge($options['query'], $queryParams);
@@ -82,7 +84,7 @@ class OrderClient extends AbstractClient
                     )
                 )
             );
-        } catch (HttpException $e) {
+        } catch (HttpException $exception) {
             throw new OrderNotFoundException();
         }
     }
@@ -102,11 +104,11 @@ class OrderClient extends AbstractClient
     {
         $options = [
             'query' => [
-                    'page' => $page,
-                    'limit' => $limit,
-                    'orderParameter' => key($sort),
-                    'orderValue' => current($sort),
-                ],
+                'page' => $page,
+                'limit' => $limit,
+                'orderParameter' => array_keys($sort),
+                'orderValue' => array_values($sort),
+            ],
         ];
 
         try {
@@ -124,7 +126,7 @@ class OrderClient extends AbstractClient
                 $this,
                 $fetchMore
             );
-        } catch (HttpException $e) {
+        } catch (HttpException $exception) {
             throw new OrderNotFoundException();
         }
     }
@@ -135,7 +137,7 @@ class OrderClient extends AbstractClient
      *
      * @return string
      */
-    public function createOrderComment(string $uuid, string $type, string $message = null, string $longMessage = null): string
+    public function createOrderComment(string $uuid, string $type, string $message = null, string $longMessage = null): \stdClass
     {
         try {
             $response = $this->request(
@@ -148,18 +150,18 @@ class OrderClient extends AbstractClient
                     'json' => [
                         'type' => $type,
                         'message' => $message,
-                        'longMessage' => $longMessage
+                        'longMessage' => $longMessage,
                     ],
                 ]
             );
 
             return $this->requestLink($response->getHeader('Location')[0]);
-        } catch (HttpException $e) {
-            if ($e->getStatusCode() === 404) {
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 404) {
                 throw new OrderNotFoundException();
-            } elseif ($e->getStatusCode() === 400) {
+            } elseif ($exception->getStatusCode() === 400) {
                 throw new OrderCommentContainsErrorException(
-                    $e->getMessage()
+                    json_decode($exception->getBody())->errors
                 );
             }
         }
@@ -191,14 +193,14 @@ class OrderClient extends AbstractClient
             $orderUrlVisaCenter = parse_url($response->getHeaders()['Location'][0]);
 
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
-        } catch (HttpException $e) {
-            if ($e->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($e->getMessage());
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 400) {
+                throw new OrderContainsErrorsException($exception->getMessage());
             }
-            if ($e->getStatusCode() === 500) {
+            if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
             }
-            throw $e;
+            throw $exception;
         }
     }
 }
