@@ -11,6 +11,6 @@ class VisaCenterGetOrderFatalErrorException extends \Exception
      */
     public function __construct()
     {
-        parent::__construct('randock.consumerui.exception.visa_center_get_oder_fatal_error');
+        parent::__construct('randock.visa_center_api.exception.visa_center_get_oder_fatal_error');
     }
 }
