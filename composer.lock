@@ -1111,12 +1111,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/randock/utils.git",
-                "reference": "ae8965207d3ca536c9c26194147ac32a0be9a377"
+                "reference": "577c5135c1ad23cd291685658973ac282b919c26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/randock/utils/zipball/ae8965207d3ca536c9c26194147ac32a0be9a377",
-                "reference": "ae8965207d3ca536c9c26194147ac32a0be9a377",
+                "url": "https://api.github.com/repos/randock/utils/zipball/577c5135c1ad23cd291685658973ac282b919c26",
+                "reference": "577c5135c1ad23cd291685658973ac282b919c26",
                 "shasum": ""
             },
             "require": {
@@ -1140,7 +1140,7 @@
                 "MIT"
             ],
             "description": "Randock Utils",
-            "time": "2017-08-31T17:34:31+00:00"
+            "time": "2017-09-01T11:03:36+00:00"
         },
         {
             "name": "randock/value-object",

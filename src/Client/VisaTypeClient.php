@@ -40,7 +40,7 @@ class VisaTypeClient extends AbstractClient
         $response = new CollectionApiResponse(
             $this->toStdClass(
                 $this->request(
-                    'GET',
+                    Request::METHOD_GET,
                     '/api/visatypes.json',
                     $options
                 )
@@ -62,7 +62,7 @@ class VisaTypeClient extends AbstractClient
         try {
             return $this->toStdClass(
                 $this->request(
-                    'GET',
+                    Request::METHOD_GET,
                     sprintf(
                         '/api/visatypes/%d.json',
                         $id
@@ -155,41 +155,27 @@ class VisaTypeClient extends AbstractClient
     }
 
     /**
-     * @param HttpException $exception
-     *
-     * @throws FormErrorsException
+     * @param int $id
      */
-    private function throwFormErrorsException(HttpException $exception): void
+    public function deleteVisaType(int $id)
     {
-        // decode body
-        $response = json_decode($exception->getBody());
+        try {
+            $this->request(
+                Request::METHOD_DELETE,
+                sprintf(
+                    '/api/visatypes/%d.json',
+                    $id
+                )
+            );
+        } catch (HttpException $exception) {
 
-        // check if it is a general error or forms
-        if (isset($response->children)) {
-            $errors = [];
-            foreach ($response->children as $fieldName => $fieldData) {
-                if (isset($fieldData->errors)) {
-                    foreach ($fieldData->errors as $fieldError) {
-                        $error = new \stdClass();
-                        $error->field = $fieldName;
-                        $error->message = $fieldError;
-
-                        $errors[] = $error;
-                    }
-                }
+            // custom exception if the visaType is not found
+            if (Response::HTTP_NOT_FOUND === $exception->getStatusCode()) {
+                throw new VisaTypeNotFoundException();
             }
 
-            // parse body
-            throw new FormErrorsException($errors);
-        } elseif (isset($response->message)) {
-            $error = new \stdClass();
-            $error->field = '';
-            $error->message = $response->message;
-
-            // an generic msg to be rendered on top of the form
-            throw new FormErrorsException([
-                $error,
-            ]);
+            throw $exception;
         }
     }
+
 }
