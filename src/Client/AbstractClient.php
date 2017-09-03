@@ -6,15 +6,9 @@ namespace Randock\VisaCenterApi\Client;
 
 use Psr\Http\Message\ResponseInterface;
 use Randock\Utils\Http\AbstractClient as CommonAbstractClient;
-use Randock\VisaCenterApi\Definition\CredentialsProviderInterface;
 
 abstract class AbstractClient extends CommonAbstractClient
 {
-
-    /**
-     * @var CredentialsProviderInterface
-     */
-    private $credentialsProvider = null;
 
     /**
      * OrderClient constructor.
@@ -65,33 +59,6 @@ abstract class AbstractClient extends CommonAbstractClient
     public function toStdClass(ResponseInterface $response): \stdClass
     {
         return json_decode($response->getBody()->getContents());
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function request(string $method, string $path, array $options = []): ResponseInterface
-    {
-        // check if we need to get credentials from a provider
-        if ($this->credentialsProvider !== null) {
-            $options['auth'] = $this->credentialsProvider->getCredentials();
-        }
-
-        return parent::request($method, $path, $options);
-
-    }
-
-    /**
-     * @param CredentialsProviderInterface $credentialsProvider
-     *
-     * @return AbstractClient
-     */
-    public function setCredentialsProvider(
-        CredentialsProviderInterface $credentialsProvider
-    ): AbstractClient {
-        $this->credentialsProvider = $credentialsProvider;
-
-        return $this;
     }
 
 }
