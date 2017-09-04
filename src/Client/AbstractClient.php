@@ -9,17 +9,18 @@ use Randock\Utils\Http\AbstractClient as CommonAbstractClient;
 
 abstract class AbstractClient extends CommonAbstractClient
 {
+
     /**
      * OrderClient constructor.
      *
-     * @param string $base_uri
+     * @param string $baseUri
      * @param string $apiVersion
      * @param array  $auth
      */
     public function __construct(
-        string $base_uri,
+        string $baseUri,
         string $apiVersion = '1.0',
-        array $auth
+        array $auth = null
     ) {
         $options = [
             'headers' => [
@@ -27,12 +28,12 @@ abstract class AbstractClient extends CommonAbstractClient
                     'application/json;version=%s',
                     $apiVersion
                 ),
-                'content_type' => 'application/json',
+                'Content-Type' => 'application/json',
             ],
             'auth' => $auth,
         ];
 
-        parent::__construct($base_uri, $options);
+        parent::__construct($baseUri, $options);
     }
 
     /**
@@ -59,4 +60,5 @@ abstract class AbstractClient extends CommonAbstractClient
     {
         return json_decode($response->getBody()->getContents());
     }
+
 }
