@@ -195,7 +195,7 @@ class OrderClient extends AbstractClient
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($exception->getMessage());
+                throw new OrderContainsErrorsException($exception->getBody());
             }
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
