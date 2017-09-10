@@ -203,4 +203,28 @@ class OrderClient extends AbstractClient
             throw $exception;
         }
     }
+
+    /**
+     * @param array $order
+     * @return string
+     * @throws OrderContainsErrorsException
+     * @throws VisaCenterGetOrderFatalErrorException
+     * @throws \Exception
+     */
+    public function updateOrder(array $order): string
+    {
+        try {
+            $this->request('PATCH', sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
+
+            return $order['orderUuid'];
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 400) {
+                throw new OrderContainsErrorsException($exception->getBody());
+            }
+            if ($exception->getStatusCode() === 500) {
+                throw new VisaCenterGetOrderFatalErrorException();
+            }
+            throw $exception;
+        }
+    }
 }
