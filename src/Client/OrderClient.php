@@ -195,7 +195,31 @@ class OrderClient extends AbstractClient
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($exception->getMessage());
+                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
+            }
+            if ($exception->getStatusCode() === 500) {
+                throw new VisaCenterGetOrderFatalErrorException();
+            }
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param array $order
+     * @return string
+     * @throws OrderContainsErrorsException
+     * @throws VisaCenterGetOrderFatalErrorException
+     * @throws \Exception
+     */
+    public function updateOrder(array $order): string
+    {
+        try {
+            $this->request('PATCH', sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
+
+            return $order['orderUuid'];
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 400) {
+                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();

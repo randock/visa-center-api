@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Exception;
 
-class OrderContainsErrorsException extends \Exception
+use Randock\Utils\Http\Exception\HttpException;
+
+class OrderContainsErrorsException extends HttpException
 {
     /**
      * OrderContainsErrorsException constructor.
-     *
-     * @param string $errors
+     * @param int $statusCode
+     * @param string|null $body
+     * @param string $message
      */
-    public function __construct(string $errors)
+    public function __construct(int $statusCode, string $body = null, string $message)
     {
-        parent::__construct($errors);
+        parent::__construct($statusCode, $body, $message);
     }
 }
