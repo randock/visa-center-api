@@ -195,7 +195,7 @@ class OrderClient extends AbstractClient
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody());
+                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
@@ -219,7 +219,7 @@ class OrderClient extends AbstractClient
             return $order['orderUuid'];
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody());
+                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
