@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
+use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
@@ -23,7 +24,7 @@ class OrderClient extends AbstractClient
     {
         return $this->toStdClass(
             $this->request(
-                'GET',
+                Request::METHOD_GET,
                 $visaFormUri
             )
         );
@@ -53,7 +54,7 @@ class OrderClient extends AbstractClient
         $response = new CollectionApiResponse(
             $this->toStdClass(
                 $this->request(
-                    'GET',
+                    Request::METHOD_GET,
                     '/api/orders.json',
                     $options
                 )
@@ -77,7 +78,7 @@ class OrderClient extends AbstractClient
         try {
             return $this->toStdClass(
                 $this->request(
-                    'GET',
+                    Request::METHOD_GET,
                     sprintf(
                         '/api/orders/%s.json',
                         $orderUuid
@@ -115,7 +116,7 @@ class OrderClient extends AbstractClient
             return new CollectionApiResponse(
                 $this->toStdClass(
                     $this->request(
-                        'GET',
+                        Request::METHOD_GET,
                         sprintf(
                             '/api/orders/%s/comments.json',
                             $orderUuid,
@@ -141,7 +142,7 @@ class OrderClient extends AbstractClient
     {
         try {
             $response = $this->request(
-                'POST',
+                Request::METHOD_POST,
                 sprintf(
                     '/api/orders/%s/comments.json',
                     $uuid
@@ -179,7 +180,7 @@ class OrderClient extends AbstractClient
     {
         try {
             $response = $this->request(
-                'POST',
+                Request::METHOD_POST,
                 '/api/orders.json',
                 [
                     'json' => $order['order'],
@@ -195,7 +196,7 @@ class OrderClient extends AbstractClient
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
+                throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
@@ -206,25 +207,43 @@ class OrderClient extends AbstractClient
 
     /**
      * @param array $order
-     * @return string
      * @throws OrderContainsErrorsException
      * @throws VisaCenterGetOrderFatalErrorException
      * @throws \Exception
      */
-    public function updateOrder(array $order): string
+    public function updateOrder(array $order): void
     {
         try {
-            $this->request('PATCH', sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
+            $this->request(Request::METHOD_PATCH, sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
 
-            return $order['orderUuid'];
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
-                throw new OrderContainsErrorsException($exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
+                throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
             }
             throw $exception;
+        }
+    }
+
+    /**
+     * @param string $uuid
+     * @param string $status
+     *
+     */
+    public function changeOrderStatus(string $uuid, string $status): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                sprintf('/api/orders/%s.json', $uuid),
+                [
+                    'status' => $status,
+                ]
+            );
+        } catch (HttpException $e) {
+            throw new OrderContainsErrorsException((int) $e->getStatusCode(), $e->getBody(), $e->getMessage());
         }
     }
 }
