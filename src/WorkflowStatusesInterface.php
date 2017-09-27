@@ -8,9 +8,9 @@ namespace Randock\VisaCenterApi;
 interface WorkflowStatusesInterface
 {
     /**
-     *  Workflow Transition Pay.
+     *  Workflow Transition Hold.
      */
-    public const PAY = 'pay';
+    public const HOLD = 'hold';
 
     /**
      *  Workflow Transition Process.
