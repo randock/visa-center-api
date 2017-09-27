@@ -241,7 +241,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/orders/%s/statuses.json', $uuid),
+                sprintf('/api/orders/%s/status.json', $uuid),
                 [
                     'status' => $status,
                 ]
