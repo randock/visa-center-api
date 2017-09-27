@@ -134,9 +134,13 @@ class OrderClient extends AbstractClient
 
     /**
      * @param string $uuid
-     * @param string $longMessage
+     * @param string $type
+     * @param string|null $message
+     * @param string|null $longMessage
      *
-     * @return string
+     * @return \stdClass
+     * @throws OrderCommentContainsErrorException
+     * @throws OrderNotFoundException
      */
     public function createOrderComment(string $uuid, string $type, string $message = null, string $longMessage = null): \stdClass
     {
@@ -237,7 +241,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/orders/%s.json', $uuid),
+                sprintf('/api/orders/%s/status.json', $uuid),
                 [
                     'status' => $status,
                 ]
