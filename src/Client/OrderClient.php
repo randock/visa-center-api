@@ -243,7 +243,7 @@ class OrderClient extends AbstractClient
                 Request::METHOD_POST,
                 sprintf('/api/orders/%s/status.json', $uuid),
                 [
-                    'status' => $status,
+                    'json' => ['status' => $status]
                 ]
             );
         } catch (HttpException $e) {
