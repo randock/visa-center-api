@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
@@ -133,14 +134,15 @@ class OrderClient extends AbstractClient
     }
 
     /**
-     * @param string $uuid
-     * @param string $type
+     * @param string      $uuid
+     * @param string      $type
      * @param string|null $message
      * @param string|null $longMessage
      *
-     * @return \stdClass
      * @throws OrderCommentContainsErrorException
      * @throws OrderNotFoundException
+     *
+     * @return \stdClass
      */
     public function createOrderComment(string $uuid, string $type, string $message = null, string $longMessage = null): \stdClass
     {
@@ -211,6 +213,7 @@ class OrderClient extends AbstractClient
 
     /**
      * @param array $order
+     *
      * @throws OrderContainsErrorsException
      * @throws VisaCenterGetOrderFatalErrorException
      * @throws \Exception
@@ -219,7 +222,6 @@ class OrderClient extends AbstractClient
     {
         try {
             $this->request(Request::METHOD_PATCH, sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
-
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 400) {
                 throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
@@ -234,7 +236,6 @@ class OrderClient extends AbstractClient
     /**
      * @param string $uuid
      * @param string $status
-     *
      */
     public function changeOrderStatus(string $uuid, string $status): void
     {
@@ -243,11 +244,44 @@ class OrderClient extends AbstractClient
                 Request::METHOD_POST,
                 sprintf('/api/orders/%s/status.json', $uuid),
                 [
-                    'json' => ['status' => $status]
+                    'json' => ['status' => $status],
                 ]
             );
         } catch (HttpException $e) {
             throw new OrderContainsErrorsException((int) $e->getStatusCode(), $e->getBody(), $e->getMessage());
         }
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return ResponseInterface
+     */
+    public function getEmail(int $id): ResponseInterface
+    {
+        return $this->request(
+            Request::METHOD_GET,
+            sprintf('/api/emails/%d', $id),
+            [
+                'stream' => true,
+            ]
+        );
+    }
+
+    /**
+     * @param int   $id
+     * @param mixed $file
+     *
+     * @return ResponseInterface
+     */
+    public function getPdf(int $id, $file): ResponseInterface
+    {
+        return $this->request(
+            Request::METHOD_GET,
+            sprintf('/api/pdfs/%d', $id),
+            [
+                'sink' => $file,
+            ]
+        );
     }
 }
