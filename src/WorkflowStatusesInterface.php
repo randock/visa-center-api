@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Randock\VisaCenterApi;
 
 /**
- * Interface WorkflowStatusesInterface
+ * Interface WorkflowStatusesInterface.
  */
 interface WorkflowStatusesInterface
 {
@@ -18,7 +20,7 @@ interface WorkflowStatusesInterface
     public const PROCESS = 'process';
 
     /**
-     *  Workflow Transition
+     *  Workflow Transition.
      */
     public const SEND = 'send';
 

@@ -10,9 +10,10 @@ class OrderContainsErrorsException extends HttpException
 {
     /**
      * OrderContainsErrorsException constructor.
-     * @param int $statusCode
+     *
+     * @param int         $statusCode
      * @param string|null $body
-     * @param string $message
+     * @param string      $message
      */
     public function __construct(int $statusCode, string $body = null, string $message)
     {

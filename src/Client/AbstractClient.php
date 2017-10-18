@@ -9,7 +9,6 @@ use Randock\Utils\Http\AbstractClient as CommonAbstractClient;
 
 abstract class AbstractClient extends CommonAbstractClient
 {
-
     /**
      * OrderClient constructor.
      *
@@ -60,5 +59,4 @@ abstract class AbstractClient extends CommonAbstractClient
     {
         return json_decode($response->getBody()->getContents());
     }
-
 }

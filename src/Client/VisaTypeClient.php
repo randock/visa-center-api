@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
-use Randock\Utils\Http\Exception\FormErrorsException;
 use Randock\VisaCenterApi\Exception\VisaTypeNotFoundException;
 
 class VisaTypeClient extends AbstractClient
@@ -168,7 +167,6 @@ class VisaTypeClient extends AbstractClient
                 )
             );
         } catch (HttpException $exception) {
-
             // custom exception if the visaType is not found
             if (Response::HTTP_NOT_FOUND === $exception->getStatusCode()) {
                 throw new VisaTypeNotFoundException();
@@ -177,5 +175,4 @@ class VisaTypeClient extends AbstractClient
             throw $exception;
         }
     }
-
 }
