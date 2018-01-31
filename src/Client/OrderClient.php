@@ -34,19 +34,29 @@ class OrderClient extends AbstractClient
     /**
      * @param int   $page
      * @param int   $limit
+     * @param array $sort
+     * @param array $filters
      * @param bool  $fetchMore
      * @param array $queryParams
      *
      * @return CollectionApiResponse
      */
-    public function getOrders(int $page = 1, int $limit = 20, array $sort = [], bool $fetchMore = false, $queryParams = []): CollectionApiResponse
+    public function getOrders(int $page = 1, int $limit = 20, array $sort = [], array $filters = [], bool $fetchMore = false, $queryParams = []): CollectionApiResponse
     {
+        // filters
+        $filterParams = $filters['filterParams'] ?? [];
+        $filterOperators = $filters['filterOperators'] ?? [];
+        $filterValues = $filters['filterValues'] ?? [];
+
         $options = [
             'query' => [
                 'page' => $page,
                 'limit' => $limit,
                 'orderParameter' => array_keys($sort),
                 'orderValue' => array_values($sort),
+                'filterParam' => $filterParams,
+                'filterValue' => $filterValues,
+                'filterOp' => $filterOperators,
             ],
         ];
 
