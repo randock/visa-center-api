@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
+use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Randock\Utils\Http\Exception\HttpException;
-use Randock\VisaCenterApi\CollectionApiResponse;
-use Randock\VisaCenterApi\Exception\VisaTypeNotFoundException;
 
 class FileClient extends AbstractClient
 {
@@ -17,7 +15,7 @@ class FileClient extends AbstractClient
     /**
      * @param string $fileName
      * @param string $raw
-     * @throws \Randock\Utils\Http\Exception\FormErrorsException
+     * @throws FileCanNotBeSentException
      */
     public function sendFile(string $fileName, string $raw)
     {
@@ -31,11 +29,7 @@ class FileClient extends AbstractClient
                 ]
             );
         } catch (HttpException $exception) {
-            if (Response::HTTP_BAD_REQUEST === $exception->getStatusCode()) {
-                $this->throwFormErrorsException($exception);
-            }
-
-            throw $exception;
+            throw new FileCanNotBeSentException();
         }
     }
 
