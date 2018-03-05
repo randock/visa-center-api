@@ -21,7 +21,7 @@ class ProvinceClient extends AbstractClient
 
         return $this->toStdClass($this->request(
                     Request::METHOD_GET,
-                    '/api/notifications.json',
+                    '/api/provinces.json',
                     $options
                 ));
 
