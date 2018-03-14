@@ -15,7 +15,6 @@ class ValidatorClient extends AbstractClient
      *
      * @throws OrderNotFoundException
      */
-
     public function getProvinces(string $orderId): \stdClass
     {
         try{
@@ -28,6 +27,5 @@ class ValidatorClient extends AbstractClient
         }
 
         return $response;
-
     }
 }
