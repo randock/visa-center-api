@@ -15,7 +15,7 @@ class ValidatorClient extends AbstractClient
      *
      * @throws OrderNotFoundException
      */
-    public function getProvinces(string $orderId): \stdClass
+    public function getOrderIssues(string $orderId): \stdClass
     {
         try{
             $response = $this->toStdClass($this->request(
