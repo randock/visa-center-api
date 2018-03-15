@@ -2,6 +2,7 @@
 
 namespace Randock\VisaCenterApi\Client;
 
+use Randock\Utils\Http\Exception\FormErrorsException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
@@ -55,7 +56,7 @@ class ValidatorClient extends AbstractClient
      * @param array $data
      *
      * @param string $orderId
-     * @throws \Randock\Utils\Http\Exception\FormErrorsException
+     * @throws FormErrorsException
      */
     public function createCustomIssue(array $data, string $orderId): void
     {
@@ -81,7 +82,7 @@ class ValidatorClient extends AbstractClient
      * @param array $data
      *
      * @param string $orderId
-     * @throws \Randock\Utils\Http\Exception\FormErrorsException
+     * @throws FormErrorsException
      */
     public function updateCustomIssue(array $data, string $orderId): void
     {
