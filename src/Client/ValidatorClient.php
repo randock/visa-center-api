@@ -3,6 +3,7 @@
 namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Http\Exception\FormErrorsException;
+use Randock\VisaCenterApi\Exception\CustomIssueNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
@@ -36,7 +37,7 @@ class ValidatorClient extends AbstractClient
      *
      * @return \stdClass
      *
-     * @throws OrderNotFoundException
+     * @throws CustomIssueNotFoundException
      */
     public function getCustomIssue(string $orderId): \stdClass
     {
@@ -46,7 +47,7 @@ class ValidatorClient extends AbstractClient
                 sprintf('/api/issues/%s/custom.json', $orderId)
             ));
         }catch (HttpException $exception) {
-            throw new OrderNotFoundException();
+            throw new CustomIssueNotFoundException();
         }
 
         return $response;
@@ -56,39 +57,14 @@ class ValidatorClient extends AbstractClient
      * @param array $data
      *
      * @param string $orderId
+     *
      * @throws FormErrorsException
      */
-    public function createCustomIssue(array $data, string $orderId): void
+    public function sendCustomIssue(array $data, string $orderId): void
     {
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/issues/%s/custom.json', $orderId),
-                [
-                    $data,
-                ]
-            );
-
-        } catch (HttpException $exception) {
-            if (Response::HTTP_BAD_REQUEST === $exception->getStatusCode()) {
-                $this->throwFormErrorsException($exception);
-            }
-
-            throw $exception;
-        }
-    }
-
-    /**
-     * @param array $data
-     *
-     * @param string $orderId
-     * @throws FormErrorsException
-     */
-    public function updateCustomIssue(array $data, string $orderId): void
-    {
-        try {
-            $this->request(
-                Request::METHOD_PATCH,
                 sprintf('/api/issues/%s/custom.json', $orderId),
                 [
                     $data,
