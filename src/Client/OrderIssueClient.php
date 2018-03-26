@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 
-class ValidatorClient extends AbstractClient
+class OrderIssueClient extends AbstractClient
 {
     /**
      * @param string $orderId
@@ -23,7 +23,7 @@ class ValidatorClient extends AbstractClient
         try{
             $response = $this->toStdClass($this->request(
                 Request::METHOD_GET,
-                sprintf('/api/issues/%s.json', $orderId)
+                sprintf('/api/orders/%s/issues.json', $orderId)
             ));
         }catch (HttpException $exception) {
             throw new OrderNotFoundException();
@@ -44,7 +44,7 @@ class ValidatorClient extends AbstractClient
         try{
             $response = $this->toStdClass($this->request(
                 Request::METHOD_GET,
-                sprintf('/api/issues/%s/custom.json', $orderId)
+                sprintf('/api/orders/%s/custom/issue.json', $orderId)
             ));
         }catch (HttpException $exception) {
             throw new CustomIssueNotFoundException();
@@ -65,7 +65,7 @@ class ValidatorClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/issues/%s/custom.json', $orderId),
+                sprintf('/api/orders/%s/custom/issue/send.json', $orderId),
                 [
                     $data,
                 ]
