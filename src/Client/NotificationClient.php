@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
 use Randock\VisaCenterApi\Exception\NotificationNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class NotificationClient extends AbstractClient
 {
-
-
     /**
      * @param int   $page
      * @param int   $limit
@@ -27,7 +25,7 @@ class NotificationClient extends AbstractClient
         $options = [
             'query' => [
                 'page' => $page,
-                'limit' => $limit
+                'limit' => $limit,
             ],
         ];
 
@@ -51,7 +49,6 @@ class NotificationClient extends AbstractClient
      * @param array $data
      *
      * @throws \Exception
-     *
      */
     public function createNotification(array $data): void
     {
@@ -63,7 +60,6 @@ class NotificationClient extends AbstractClient
                     $data,
                 ]
             );
-
         } catch (HttpException $exception) {
             if (Response::HTTP_BAD_REQUEST === $exception->getStatusCode()) {
                 $this->throwFormErrorsException($exception);
@@ -77,7 +73,6 @@ class NotificationClient extends AbstractClient
      * @param int $notificationId
      *
      * @throws \Exception
-     *
      */
     public function notificationRead(int $notificationId): void
     {
@@ -89,7 +84,6 @@ class NotificationClient extends AbstractClient
                     $notificationId
                 )
             );
-
         } catch (HttpException $exception) {
             // custom exception if the visaType is not found
             if (Response::HTTP_NOT_FOUND === $exception->getStatusCode()) {
@@ -99,6 +93,4 @@ class NotificationClient extends AbstractClient
             throw $exception;
         }
     }
-
-
 }
