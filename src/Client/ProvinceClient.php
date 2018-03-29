@@ -8,15 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProvinceClient extends AbstractClient
 {
-
     /**
      * @param string $countryCode
+     *
      * @return \stdClass
      */
     public function getProvinces(string $countryCode): \stdClass
     {
         $options['query'] = [
-            "country" => $countryCode
+            'country' => $countryCode,
         ];
 
         return $this->toStdClass($this->request(
@@ -24,7 +24,5 @@ class ProvinceClient extends AbstractClient
                     '/api/provinces.json',
                     $options
                 ));
-
     }
-
 }
