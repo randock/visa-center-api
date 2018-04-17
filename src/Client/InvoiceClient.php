@@ -1,0 +1,77 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Randock\VisaCenterApi\Client;
+
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Randock\Utils\Http\Exception\HttpException;
+use Randock\VisaCenterApi\Exception\VisaCenterGetOrderFatalErrorException;
+
+class InvoiceClient extends AbstractClient
+{
+    /**
+     * @param string $orderUuid
+     *
+     * @param string $file
+     * @return ResponseInterface
+     */
+    public function getOrderInvoicePdf(string $orderUuid, string $file): ResponseInterface
+    {
+        return $this->request(
+            Request::METHOD_GET,
+            sprintf('/api/invoices/orders/%s/pdf.json', $orderUuid),
+            [
+                'sink' => $file,
+            ]
+        );
+    }
+
+
+    /**
+     * @param array $ordersToInvoice
+     * @return void
+     * @throws VisaCenterGetOrderFatalErrorException
+     */
+    public function postOrdersToInvoice(array $ordersToInvoice): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                '/api/invoices.json',
+                [
+                    'invoices' => $ordersToInvoice
+                ]
+            );
+
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 500) {
+                throw new VisaCenterGetOrderFatalErrorException();
+            }
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param string $orderUuid
+     * @return void
+     * @throws VisaCenterGetOrderFatalErrorException
+     */
+    public function sendOrderInvoicePdfByEmail(string $orderUuid): void
+    {
+        try {
+            $this->request(
+            Request::METHOD_POST,
+                    sprintf('/api/invoices/orders/%s/pdf/send.json', $orderUuid)
+            );
+
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 500) {
+                throw new VisaCenterGetOrderFatalErrorException();
+            }
+            throw $exception;
+        }
+    }
+
+}
