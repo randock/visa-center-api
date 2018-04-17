@@ -203,7 +203,7 @@ class OrderClient extends AbstractClient
                     'query' => [
                         'locale' => $order['locale'],
                         'visaType' => $order['visaTypeId'],
-                        'domain' => $order['domainName']
+                        'domainName' => $order['domainName']
                     ],
                 ]
             );
