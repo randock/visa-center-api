@@ -12,16 +12,15 @@ use Randock\VisaCenterApi\Exception\VisaCenterGetOrderFatalErrorException;
 class InvoiceClient extends AbstractClient
 {
     /**
-     * @param string $orderUuid
-     *
+     * @param int $invoiceId
      * @param string $file
      * @return ResponseInterface
      */
-    public function getOrderInvoicePdf(string $orderUuid, string $file): ResponseInterface
+    public function getInvoice(int $invoiceId, string $file): ResponseInterface
     {
         return $this->request(
             Request::METHOD_GET,
-            sprintf('/api/invoices/orders/%s/pdf.json', $orderUuid),
+            sprintf('/api/invoices/%s/pdf.json', $invoiceId),
             [
                 'sink' => $file,
             ]
@@ -54,16 +53,17 @@ class InvoiceClient extends AbstractClient
     }
 
     /**
+     * @param int $invoiceId
      * @param string $orderUuid
      * @return void
      * @throws VisaCenterGetOrderFatalErrorException
      */
-    public function sendOrderInvoicePdfByEmail(string $orderUuid): void
+    public function sendInvoicePdf(int $invoiceId, string $orderUuid): void
     {
         try {
             $this->request(
             Request::METHOD_POST,
-                    sprintf('/api/invoices/orders/%s/pdf/send.json', $orderUuid)
+                    sprintf('/api/invoices/%s/orders/%s/pdf/send.json', $invoiceId, $orderUuid)
             );
 
         } catch (HttpException $exception) {
