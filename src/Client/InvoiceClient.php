@@ -12,8 +12,9 @@ use Randock\VisaCenterApi\Exception\VisaCenterGetOrderFatalErrorException;
 class InvoiceClient extends AbstractClient
 {
     /**
-     * @param int $invoiceId
+     * @param int    $invoiceId
      * @param string $file
+     *
      * @return ResponseInterface
      */
     public function getInvoice(int $invoiceId, string $file): ResponseInterface
@@ -27,10 +28,9 @@ class InvoiceClient extends AbstractClient
         );
     }
 
-
     /**
      * @param array $ordersToInvoice
-     * @return void
+     *
      * @throws VisaCenterGetOrderFatalErrorException
      */
     public function postOrdersToInvoice(array $ordersToInvoice): void
@@ -40,10 +40,9 @@ class InvoiceClient extends AbstractClient
                 Request::METHOD_POST,
                 '/api/invoices.json',
                 [
-                    'invoices' => $ordersToInvoice
+                    'invoices' => $ordersToInvoice,
                 ]
             );
-
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
@@ -53,9 +52,9 @@ class InvoiceClient extends AbstractClient
     }
 
     /**
-     * @param int $invoiceId
+     * @param int    $invoiceId
      * @param string $orderUuid
-     * @return void
+     *
      * @throws VisaCenterGetOrderFatalErrorException
      */
     public function sendInvoicePdf(int $invoiceId, string $orderUuid): void
@@ -65,7 +64,6 @@ class InvoiceClient extends AbstractClient
             Request::METHOD_POST,
                     sprintf('/api/invoices/%s/orders/%s/pdf/send.json', $invoiceId, $orderUuid)
             );
-
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 500) {
                 throw new VisaCenterGetOrderFatalErrorException();
@@ -73,5 +71,4 @@ class InvoiceClient extends AbstractClient
             throw $exception;
         }
     }
-
 }

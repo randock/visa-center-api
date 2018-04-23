@@ -23,8 +23,10 @@ class FileClient extends AbstractClient
                 Request::METHOD_POST,
                 '/api/manualfiles.json',
                 [
-                    'fileName' => $fileName,
-                    'fileRaw' => $raw,
+                    'json' => [
+                        'fileName' => $fileName,
+                        'fileRaw' => $raw,
+                    ],
                 ]
             );
         } catch (HttpException $exception) {
