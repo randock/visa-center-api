@@ -19,6 +19,7 @@ class DocumentClient extends AbstractClient
     /**
      * @param int $fileId
      *
+     * @param string $tmpFileName
      * @return string
      */
     public function getFile(int $fileId, string $tmpFileName): string
