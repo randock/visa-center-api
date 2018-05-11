@@ -6,7 +6,6 @@ namespace Randock\VisaCenterApi\Client;
 
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
-use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DocumentClient extends AbstractClient

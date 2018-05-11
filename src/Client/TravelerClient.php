@@ -32,4 +32,31 @@ class TravelerClient extends AbstractClient
             throw $exception;
         }
     }
+
+    /**
+     * @param string $uuid
+     *
+     * @return \stdClass
+     * @throws TravelerNotFoundException
+     */
+    public function getTraveler(string $uuid)
+    {
+        try {
+            return $this->toStdClass(
+                $this->request(
+                    'GET',
+                    sprintf(
+                        '/api/travelers/%s.json',
+                        $uuid
+                    )
+                )
+            );
+
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 404) {
+                throw new TravelerNotFoundException($exception->getMessage());
+            }
+            throw $exception;
+        }
+    }
 }
