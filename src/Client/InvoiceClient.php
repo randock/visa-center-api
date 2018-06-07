@@ -40,7 +40,7 @@ class InvoiceClient extends AbstractClient
                 Request::METHOD_POST,
                 '/api/invoices.json',
                 [
-                    'invoices' => $ordersToInvoice,
+                    'json'=> ['invoices' => $ordersToInvoice]
                 ]
             );
         } catch (HttpException $exception) {
