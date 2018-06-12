@@ -295,4 +295,23 @@ class OrderClient extends AbstractClient
             ]
         );
     }
+
+
+    /**
+     * @param string $orderId
+     * @return \stdClass
+     */
+    public function getOrderDocuments(string $orderId): \stdClass
+    {
+        try {
+            $response = $this->toStdClass($this->request(
+                Request::METHOD_GET,
+                sprintf('/api/orders/%s/documents.json', $orderId)
+            ));
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+
+        return $response;
+    }
 }
