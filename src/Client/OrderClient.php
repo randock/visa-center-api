@@ -296,9 +296,9 @@ class OrderClient extends AbstractClient
         );
     }
 
-
     /**
      * @param string $orderId
+     *
      * @return \stdClass
      */
     public function getOrderDocuments(string $orderId): \stdClass

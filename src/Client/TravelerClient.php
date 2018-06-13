@@ -36,8 +36,9 @@ class TravelerClient extends AbstractClient
     /**
      * @param string $uuid
      *
-     * @return \stdClass
      * @throws TravelerNotFoundException
+     *
+     * @return \stdClass
      */
     public function getTraveler(string $uuid)
     {
@@ -51,7 +52,6 @@ class TravelerClient extends AbstractClient
                     )
                 )
             );
-
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 404) {
                 throw new TravelerNotFoundException($exception->getMessage());
