@@ -9,12 +9,11 @@ use Randock\Utils\Http\Exception\HttpException;
 
 class QueueClient extends AbstractClient
 {
-
     /**
      * @return array
      */
-    public function getPassportQueue() {
-
+    public function getPassportQueue()
+    {
         try {
             $response = $this->parseContentToArray(
                 $this->request(
@@ -27,14 +26,13 @@ class QueueClient extends AbstractClient
         }
 
         return $response;
-
     }
 
     /**
      * @return array
      */
-    public function getPhotoQueue() {
-
+    public function getPhotoQueue()
+    {
         try {
             $response = $this->parseContentToArray(
                 $this->request(
@@ -47,7 +45,6 @@ class QueueClient extends AbstractClient
         }
 
         return $response;
-
     }
 
     /**
@@ -65,25 +62,23 @@ class QueueClient extends AbstractClient
                 ),
                 [
                     'json' => [
-                        'identifier' => $identifier
-                    ]
+                        'identifier' => $identifier,
+                    ],
                 ]
-
             );
 
             return;
-
         } catch (HttpException $exception) {
             throw $exception;
         }
-
     }
 
     /**
      * @param string $traveler
      * @param string $identifier
+     * @param string $photo
      */
-    public function approvePhoto(string $traveler, string $identifier)
+    public function cropPhoto(string $traveler, string $identifier, string $photo)
     {
         try {
             $this->request(
@@ -94,17 +89,15 @@ class QueueClient extends AbstractClient
                 ),
                 [
                     'json' => [
-                        'identifier' => $identifier
-                    ]
+                        'identifier' => $identifier,
+                        'photo' => $photo,
+                    ],
                 ]
-
             );
 
             return;
-
         } catch (HttpException $exception) {
             throw $exception;
         }
-
     }
 }
