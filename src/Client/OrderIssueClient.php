@@ -35,27 +35,6 @@ class OrderIssueClient extends AbstractClient
     }
 
     /**
-     * @param string $orderId
-     *
-     * @throws CustomIssueNotFoundException
-     *
-     * @return \stdClass
-     */
-    public function getCustomIssue(string $orderId): \stdClass
-    {
-        try {
-            $response = $this->toStdClass($this->request(
-                Request::METHOD_GET,
-                sprintf('/api/orders/%s/custom/issue.json', $orderId)
-            ));
-        } catch (HttpException $exception) {
-            throw new CustomIssueNotFoundException();
-        }
-
-        return $response;
-    }
-
-    /**
      * @param string $message
      * @param string $orderId
      *
