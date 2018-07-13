@@ -36,11 +36,12 @@ class OrderIssueClient extends AbstractClient
 
     /**
      * @param string $message
+     * @param bool $orderEditable
      * @param string $orderId
      *
      * @throws FormErrorsException
      */
-    public function sendCustomIssue(string $message, string $orderId): void
+    public function sendCustomIssue(string $message, string $orderId, bool $orderEditable = true): void
     {
         try {
             $this->request(
@@ -49,6 +50,7 @@ class OrderIssueClient extends AbstractClient
                 [
                     'json' => [
                         'message' => $message,
+                        'orderEditable' => $orderEditable
                     ],
                 ]
             );
