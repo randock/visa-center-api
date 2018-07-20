@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
+use Randock\VisaCenterApi\Exception\PdfNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderContainsErrorsException;
 use Randock\VisaCenterApi\Exception\OrderCommentContainsErrorException;
@@ -294,6 +295,26 @@ class OrderClient extends AbstractClient
                 'sink' => $file,
             ]
         );
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws PdfNotFoundException
+     */
+    public function deletePdf(int $id): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_DELETE,
+                sprintf('/api/pdfs/%d', $id)
+            );
+        }catch (HttpException $exception){
+            if ($exception->getStatusCode() === 404) {
+                throw new PdfNotFoundException($exception->getMessage());
+            }
+            throw $exception;
+        }
     }
 
     /**
