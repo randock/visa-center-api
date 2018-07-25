@@ -58,13 +58,41 @@ class QueueClient extends AbstractClient
      * @param string $identifier
      * @param string $passport
      */
-    public function cropPassport(string $traveler, string $identifier, string $passport)
+    public function approvePassport(string $traveler, string $identifier, string $passport)
     {
         try {
             $this->request(
                 Request::METHOD_POST,
                 sprintf(
                     '/api/queues/passport/%s.json',
+                    $traveler
+                ),
+                [
+                    'json' => [
+                        'identifier' => $identifier,
+                        'passport' => $passport,
+                    ],
+                ]
+            );
+
+            return;
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param string $traveler
+     * @param string $identifier
+     * @param string $passport
+     */
+    public function validatePassport(string $traveler, string $identifier, string $passport)
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                sprintf(
+                    '/api/queues/passport/validate/%s.json',
                     $traveler
                 ),
                 [
