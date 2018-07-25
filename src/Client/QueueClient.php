@@ -16,18 +16,15 @@ class QueueClient extends AbstractClient
     public function getPassportQueue(bool $revision = false)
     {
         try {
-
-            if($revision){
-                $revisionParam = '?revision=true';
-            }
-
             $response = $this->parseContentToArray(
                 $this->request(
                     Request::METHOD_GET,
-                    sprintf(
-                        '/api/queues/passport.json%s',
-                        $revisionParam ?? ''
-                    )
+                    '/api/queues/passport.json',
+                    [
+                        "query" => [
+                            "revision" => $revision
+                        ]
+                    ]
                 )
             );
         } catch (HttpException $exception) {
