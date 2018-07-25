@@ -10,15 +10,21 @@ use Randock\Utils\Http\Exception\HttpException;
 class QueueClient extends AbstractClient
 {
     /**
+     * @param bool $revision
      * @return array
      */
-    public function getPassportQueue()
+    public function getPassportQueue(bool $revision = false)
     {
         try {
             $response = $this->parseContentToArray(
                 $this->request(
                     Request::METHOD_GET,
-                    '/api/queues/passport.json'
+                    '/api/queues/passport.json',
+                    [
+                        "query" => [
+                            "revision" => $revision
+                        ]
+                    ]
                 )
             );
         } catch (HttpException $exception) {
