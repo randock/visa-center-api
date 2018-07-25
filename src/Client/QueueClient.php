@@ -56,9 +56,8 @@ class QueueClient extends AbstractClient
     /**
      * @param string $traveler
      * @param string $identifier
-     * @param string $passport
      */
-    public function approvePassport(string $traveler, string $identifier, string $passport)
+    public function approvePassport(string $traveler, string $identifier)
     {
         try {
             $this->request(
@@ -69,8 +68,7 @@ class QueueClient extends AbstractClient
                 ),
                 [
                     'json' => [
-                        'identifier' => $identifier,
-                        'passport' => $passport,
+                        'identifier' => $identifier
                     ],
                 ]
             );
