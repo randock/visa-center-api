@@ -103,6 +103,37 @@ class OrderClient extends AbstractClient
     }
 
     /**
+     * @param string $dateStart
+     * @param string|null $dateFinish
+     * @param array|null $excludedStatuses
+     * @param string|null $isoCode
+     * @param bool $groupByDate
+     * @return \stdClass
+     */
+    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null, bool $groupByDate = false): \stdClass
+    {
+        try {
+            return $this->toStdClass(
+                $this->request(
+                    Request::METHOD_GET,
+                    '/api/orders/stats.json',
+                    [
+                        "query"=> [
+                            "dateStart" => $dateStart,
+                            "dateFinish" => $dateFinish,
+                            "excludedStatuses" => $excludedStatuses,
+                            "isoCode" => $isoCode,
+                            "groupByDate" => $groupByDate
+                        ]
+                    ]
+                )
+            );
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+    }
+
+    /**
      * @param string $orderUuid
      * @param int    $page
      * @param int    $limit
