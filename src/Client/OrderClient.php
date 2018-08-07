@@ -107,10 +107,9 @@ class OrderClient extends AbstractClient
      * @param string|null $dateFinish
      * @param array|null $excludedStatuses
      * @param string|null $isoCode
-     * @param bool $groupByDate
      * @return \stdClass
      */
-    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null, bool $groupByDate = false): \stdClass
+    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null): \stdClass
     {
         try {
             return $this->toStdClass(
@@ -122,8 +121,7 @@ class OrderClient extends AbstractClient
                             "dateStart" => $dateStart,
                             "dateFinish" => $dateFinish,
                             "excludedStatuses" => $excludedStatuses,
-                            "isoCode" => $isoCode,
-                            "groupByDate" => $groupByDate
+                            "isoCode" => $isoCode
                         ]
                     ]
                 )
