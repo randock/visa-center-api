@@ -107,25 +107,27 @@ class OrderClient extends AbstractClient
      * @param string|null $dateFinish
      * @param array|null $excludedStatuses
      * @param string|null $isoCode
-     * @return \stdClass
+     * @return array
      */
-    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null): \stdClass
+    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null, string $dateGroup = null): array
     {
         try {
-            return $this->toStdClass(
-                $this->request(
-                    Request::METHOD_GET,
-                    '/api/orders/stats.json',
-                    [
-                        "query"=> [
-                            "dateStart" => $dateStart,
-                            "dateFinish" => $dateFinish,
-                            "excludedStatuses" => $excludedStatuses,
-                            "isoCode" => $isoCode
-                        ]
+            $response =  $this->request(
+                Request::METHOD_GET,
+                '/api/orders/stats.json',
+                [
+                    "query"=> [
+                        "dateStart" => $dateStart,
+                        "dateFinish" => $dateFinish,
+                        "excludedStatuses" => $excludedStatuses,
+                        "isoCode" => $isoCode,
+                        "dateGroup" => $dateGroup
                     ]
-                )
+                ]
             );
+
+            return json_decode($response->getBody()->getContents(), true);
+
         } catch (HttpException $exception) {
             throw $exception;
         }
