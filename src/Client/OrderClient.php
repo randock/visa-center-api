@@ -107,9 +107,12 @@ class OrderClient extends AbstractClient
      * @param string|null $dateFinish
      * @param array|null $excludedStatuses
      * @param string|null $isoCode
+     * @param string|null $dateGroup
+     * @param string|null $company
+     * @param string|null $domain
      * @return array
      */
-    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null, string $dateGroup = null): array
+    public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null, string $dateGroup = null, string $company = null, string $domain = null): array
     {
         try {
             $response =  $this->request(
@@ -121,7 +124,9 @@ class OrderClient extends AbstractClient
                         "dateFinish" => $dateFinish,
                         "excludedStatuses" => $excludedStatuses,
                         "isoCode" => $isoCode,
-                        "dateGroup" => $dateGroup
+                        "dateGroup" => $dateGroup,
+                        "company" => $company,
+                        "domain" => $domain
                     ]
                 ]
             );
