@@ -10,12 +10,12 @@ use Randock\Utils\Http\Exception\HttpException;
 class DomainClient extends AbstractClient
 {
     /**
-     * @return \stdClass
+     * @return array
      */
-    public function getDomainsNestedByCompany(): \stdClass
+    public function getDomainsNestedByCompany(): array
     {
         try {
-            $response = $this->toStdClass(
+            $response = $this->parseContentToArray(
                 $this->request(
                     Request::METHOD_GET,
                     '/api/domains/nested/company.json'
@@ -27,5 +27,4 @@ class DomainClient extends AbstractClient
 
         return $response;
     }
-
 }
