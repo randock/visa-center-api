@@ -6,6 +6,7 @@ namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
 use Psr\Http\Message\ResponseInterface;
+use Randock\VisaCenterApi\Exception\GovRegistrationContainsErrorsException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
@@ -370,5 +371,95 @@ class OrderClient extends AbstractClient
         }
 
         return $response;
+    }
+
+    /**
+     * @param string $orderUuid
+     *
+     * @param string $schemaPath
+     * @return \stdClass
+     * @throws OrderNotFoundException
+     */
+    public function getReusableDataOrder(string $orderUuid, string $schemaPath): \stdClass
+    {
+        try {
+            return $this->toStdClass(
+                $this->request(
+                    Request::METHOD_GET,
+                    sprintf(
+                        '/api/orders/%s/reusable-data.json',
+                        $orderUuid
+                    ),
+                    [
+                        "query" => [
+                            "schemaPath" => $schemaPath
+                        ]
+                    ]
+                )
+            );
+        } catch (HttpException $exception) {
+            throw new OrderNotFoundException();
+        }
+    }
+
+    /**
+     * @param string $orderUuid
+     * @param array $data
+     * @param string $locale
+     * @return void
+     */
+    public function createGovRegistration(string $orderUuid, array $data, string $locale): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                sprintf(
+                    '/api/orders/%s/gov-registration.json',
+                    $orderUuid
+                ),
+                [
+                    'json' => $data,
+                    'query' =>[
+                        'locale' => $locale
+                    ]
+                ]
+            );
+
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param string $orderUuid
+     * @param array $data
+     * @param string $locale
+     * @return void
+     * @throws OrderNotFoundException
+     */
+    public function validateGovRegistration(string $orderUuid, array $data, string $locale): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                sprintf(
+                    '/api/orders/%s/validate-gov-registration.json',
+                    $orderUuid
+                ),
+                [
+                    'json' => $data,
+                    'query' =>[
+                        'locale' => $locale
+                    ]
+                ]
+            );
+
+        } catch (HttpException $exception) {
+            if ($exception->getStatusCode() === 404) {
+                throw new OrderNotFoundException();
+            } elseif ($exception->getStatusCode() === 400) {
+                throw new GovRegistrationContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
+            }
+        }
     }
 }
