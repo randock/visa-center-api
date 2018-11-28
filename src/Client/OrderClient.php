@@ -462,4 +462,47 @@ class OrderClient extends AbstractClient
             }
         }
     }
+
+    /**
+     * @param string $dateStart
+     * @param string|null $dateFinish
+     * @param array|null $excludedStatuses
+     * @param string|null $isoCode
+     * @param string|null $dateGroup
+     * @param string|null $company
+     * @param string|null $domain
+     * @return int
+     */
+    public function getTotalVisasSold(
+        string $dateStart,
+        string $dateFinish = null,
+        array $excludedStatuses = null,
+        string $isoCode = null,
+        string $dateGroup = null,
+        string $company = null,
+        string $domain = null): int
+    {
+        try {
+            $response =  $this->request(
+                Request::METHOD_GET,
+                '/api/orders/stats/total/visas/sold.json',
+                [
+                    "query"=> [
+                        "dateStart" => $dateStart,
+                        "dateFinish" => $dateFinish,
+                        "excludedStatuses" => $excludedStatuses,
+                        "isoCode" => $isoCode,
+                        "dateGroup" => $dateGroup,
+                        "company" => $company,
+                        "domain" => $domain
+                    ]
+                ]
+            );
+
+            return (int) $response->getBody()->getContents();
+
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+    }
 }
