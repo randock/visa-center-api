@@ -285,15 +285,21 @@ class OrderClient extends AbstractClient
     /**
      * @param string $uuid
      * @param string $status
+     * @param bool   $debug
+     *
+     * @throws OrderContainsErrorsException
      */
-    public function changeOrderStatus(string $uuid, string $status): void
+    public function changeOrderStatus(string $uuid, string $status, bool $debug = false): void
     {
         try {
             $this->request(
                 Request::METHOD_POST,
                 sprintf('/api/orders/%s/status.json', $uuid),
                 [
-                    'json' => ['status' => $status],
+                    'json' => [
+                        'status' => $status,
+                        'debug' => $debug ? '1' : '0'
+                    ],
                 ]
             );
         } catch (HttpException $e) {
