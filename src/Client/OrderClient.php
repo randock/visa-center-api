@@ -308,6 +308,21 @@ class OrderClient extends AbstractClient
     }
 
     /**
+     * @param string $uuid
+     */
+    public function forceErrorStatus(string $uuid): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                sprintf('/api/orders/%s/force/status/error.json', $uuid)
+            );
+        } catch (HttpException $e) {
+            throw new OrderContainsErrorsException((int) $e->getStatusCode(), $e->getBody(), $e->getMessage());
+        }
+    }
+
+    /**
      * @param int $id
      *
      * @return ResponseInterface
