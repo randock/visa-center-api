@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use GuzzleHttp\RequestOptions;
+use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -39,4 +40,33 @@ class DocumentClient extends AbstractClient
             throw new BadRequestHttpException($e->getMessage());
         }
     }
+
+    /**
+     * @param string $objectId
+     * @param string $type
+     * @param string $identifier
+     * @param string $file
+     * @throws FileCanNotBeSentException
+     */
+    public function uploadDocument(string $objectId, string $type, string $identifier, string $file)
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                '/api/files.json',
+                [
+                    'json' => [
+                        'objectId' => $objectId,
+                        'type' => $type,
+                        'identifier' => $identifier,
+                        'rawDocument' => $file,
+                    ],
+                ]
+            );
+        } catch (HttpException $exception) {
+            throw new FileCanNotBeSentException();
+        }
+    }
+
+
 }

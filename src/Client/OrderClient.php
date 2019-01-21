@@ -6,6 +6,7 @@ namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
 use Psr\Http\Message\ResponseInterface;
+use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 use Randock\VisaCenterApi\Exception\GovRegistrationContainsErrorsException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
@@ -389,6 +390,24 @@ class OrderClient extends AbstractClient
             $response = $this->toStdClass($this->request(
                 Request::METHOD_GET,
                 sprintf('/api/orders/%s/documents.json', $orderId)
+            ));
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $orderUuid
+     * @return \stdClass
+     */
+    public function getAllDocuments(string $orderUuid): \stdClass
+    {
+        try {
+            $response = $this->toStdClass($this->request(
+                Request::METHOD_GET,
+                sprintf('/api/orders/%s/all/documents.json', $orderUuid)
             ));
         } catch (HttpException $exception) {
             throw $exception;
