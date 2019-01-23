@@ -45,22 +45,34 @@ class DocumentClient extends AbstractClient
      * @param string $objectId
      * @param string $type
      * @param string $identifier
-     * @param string $file
+     * @param string $filePath
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocument(string $objectId, string $type, string $identifier, string $file)
+    public function uploadDocument(string $objectId, string $type, string $identifier, string $filePath)
     {
         try {
             $this->request(
                 Request::METHOD_POST,
                 '/api/files.json',
                 [
-                    'json' => [
-                        'objectId' => $objectId,
-                        'type' => $type,
-                        'identifier' => $identifier,
-                        'rawDocument' => $file,
-                    ],
+                    'multipart' =>[
+                        [
+                            'name'     => 'objectId',
+                            'contents' => $objectId
+                        ],
+                        [
+                            'name'     => 'type',
+                            'contents' => $type
+                        ],
+                        [
+                            'name'     => 'identifier',
+                            'contents' => $identifier
+                        ],
+                        [
+                            'name'     => 'rawDocument',
+                            'contents' => fopen($filePath, 'r')
+                        ]
+                    ]
                 ]
             );
         } catch (HttpException $exception) {
