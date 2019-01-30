@@ -548,4 +548,52 @@ class OrderClient extends AbstractClient
             throw $exception;
         }
     }
+
+    /**
+     * @param array $orderUuidList
+     *
+     * @return array
+     */
+    public function getOrdersStatuses(array $orderUuidList): array
+    {
+        $response =
+            $this->request(
+                Request::METHOD_POST,
+                '/api/orders/statuses.json',
+                [
+                    'json' => ["uuids" =>$orderUuidList]
+                ]
+            );
+        $ordersStatuses = json_decode($response->getBody()->getContents());
+
+        $mappedOrdersStatuses = [];
+        foreach ($ordersStatuses as $orderStatus){
+            $mappedOrdersStatuses[$orderStatus->uuid->uuid] = $orderStatus->status;
+        }
+        return $mappedOrdersStatuses;
+    }
+
+    /**
+     * @param array $orderUuidList
+     *
+     * @return array
+     */
+    public function getOrdersByUuids(array $orderUuidList): array
+    {
+        $response =
+            $this->request(
+                Request::METHOD_POST,
+                '/api/orders/by-uuids.json',
+                [
+                    'json' => ["uuids" =>$orderUuidList]
+                ]
+            );
+        $orders = json_decode($response->getBody()->getContents());
+
+        $mappedOrders = [];
+        foreach ($orders as $order){
+            $mappedOrders[$order->uuid] = $order;
+        }
+        return $mappedOrders;
+    }
 }
