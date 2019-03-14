@@ -105,6 +105,30 @@ class OrderClient extends AbstractClient
     }
 
     /**
+     * @param int $orderId
+     *
+     * @throws OrderNotFoundException
+     *
+     * @return \stdClass
+     */
+    public function getOrderByOrderId(int $orderId): \stdClass
+    {
+        try {
+            return $this->toStdClass(
+                $this->request(
+                    Request::METHOD_GET,
+                    sprintf(
+                        '/api/orders/by-order-id/%s.json',
+                        $orderId
+                    )
+                )
+            );
+        } catch (HttpException $exception) {
+            throw new OrderNotFoundException();
+        }
+    }
+
+    /**
      * @param string $dateStart
      * @param string|null $dateFinish
      * @param array|null $excludedStatuses
