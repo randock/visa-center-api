@@ -11,19 +11,26 @@ class QueueClient extends AbstractClient
 {
     /**
      * @param bool $revision
+     * @param string|null $orderUuid
      * @return array
      */
-    public function getPassportQueue(bool $revision = false)
+    public function getPassportQueue(bool $revision = false, string $orderUuid = null)
     {
+        if(null!==$orderUuid){
+            $queryOrderUuid = ["orderUuid" => $orderUuid];
+        }
+
         try {
             $response = $this->parseContentToArray(
                 $this->request(
                     Request::METHOD_GET,
                     '/api/queues/passport.json',
                     [
-                        "query" => [
-                            "revision" => $revision
-                        ]
+                        "query" =>
+                            array_merge(
+                                ["revision" => $revision],
+                                $queryOrderUuid ?? []
+                            )
                     ]
                 )
             );
@@ -35,15 +42,23 @@ class QueueClient extends AbstractClient
     }
 
     /**
+     * @param string|null $orderUuid
      * @return array
      */
-    public function getPhotoQueue()
+    public function getPhotoQueue(string $orderUuid = null)
     {
+        if(null!==$orderUuid){
+            $queryOrderUuid = ["orderUuid" => $orderUuid];
+        }
+
         try {
             $response = $this->parseContentToArray(
                 $this->request(
                     Request::METHOD_GET,
-                    '/api/queues/photo.json'
+                    '/api/queues/photo.json',
+                    [
+                        "query" => $queryOrderUuid ?? []
+                    ]
                 )
             );
         } catch (HttpException $exception) {
