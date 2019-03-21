@@ -6,8 +6,6 @@ namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
 use Psr\Http\Message\ResponseInterface;
-use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
-use Randock\VisaCenterApi\Exception\GovRegistrationContainsErrorsException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
@@ -16,6 +14,7 @@ use Randock\VisaCenterApi\Exception\OrderNotFoundException;
 use Randock\VisaCenterApi\Exception\OrderContainsErrorsException;
 use Randock\VisaCenterApi\Exception\OrderCommentContainsErrorException;
 use Randock\VisaCenterApi\Exception\VisaCenterGetOrderFatalErrorException;
+use Randock\VisaCenterApi\Exception\GovRegistrationContainsErrorsException;
 
 class OrderClient extends AbstractClient
 {
@@ -129,9 +128,9 @@ class OrderClient extends AbstractClient
     }
 
     /**
-     * @param string $dateStart
+     * @param string      $dateStart
      * @param string|null $dateFinish
-     * @param array|null $excludedStatuses
+     * @param array|null  $excludedStatuses
      * @param string|null $isoCode
      * @param string|null $dateGroup
      * @param string|null $company
@@ -143,25 +142,24 @@ class OrderClient extends AbstractClient
     public function getOrdersStats(string $dateStart, string $dateFinish = null, array $excludedStatuses = null, string $isoCode = null, string $dateGroup = null, string $company = null, string $domain = null, string $arrivalDate = null): array
     {
         try {
-            $response =  $this->request(
+            $response = $this->request(
                 Request::METHOD_GET,
                 '/api/orders/stats.json',
                 [
-                    "query"=> [
-                        "dateStart" => $dateStart,
-                        "dateFinish" => $dateFinish,
-                        "excludedStatuses" => $excludedStatuses,
-                        "isoCode" => $isoCode,
-                        "dateGroup" => $dateGroup,
-                        "company" => $company,
-                        "domain" => $domain,
-                        "arrivalDate" => $arrivalDate
-                    ]
+                    'query' => [
+                        'dateStart' => $dateStart,
+                        'dateFinish' => $dateFinish,
+                        'excludedStatuses' => $excludedStatuses,
+                        'isoCode' => $isoCode,
+                        'dateGroup' => $dateGroup,
+                        'company' => $company,
+                        'domain' => $domain,
+                        'arrivalDate' => $arrivalDate,
+                    ],
                 ]
             );
 
             return json_decode($response->getBody()->getContents(), true);
-
         } catch (HttpException $exception) {
             throw $exception;
         }
@@ -326,7 +324,7 @@ class OrderClient extends AbstractClient
                 [
                     'json' => [
                         'status' => $status,
-                        'debug' => $debug ? '1' : '0'
+                        'debug' => $debug ? '1' : '0',
                     ],
                 ]
             );
@@ -395,7 +393,7 @@ class OrderClient extends AbstractClient
                 Request::METHOD_DELETE,
                 sprintf('/api/pdfs/%d', $id)
             );
-        }catch (HttpException $exception){
+        } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 404) {
                 throw new PdfNotFoundException($exception->getMessage());
             }
@@ -424,6 +422,7 @@ class OrderClient extends AbstractClient
 
     /**
      * @param string $orderUuid
+     *
      * @return \stdClass
      */
     public function getAllDocuments(string $orderUuid): \stdClass
@@ -442,10 +441,11 @@ class OrderClient extends AbstractClient
 
     /**
      * @param string $orderUuid
-     *
      * @param string $schemaPath
-     * @return \stdClass
+     *
      * @throws OrderNotFoundException
+     *
+     * @return \stdClass
      */
     public function getReusableDataOrder(string $orderUuid, string $schemaPath): \stdClass
     {
@@ -458,9 +458,9 @@ class OrderClient extends AbstractClient
                         $orderUuid
                     ),
                     [
-                        "query" => [
-                            "schemaPath" => $schemaPath
-                        ]
+                        'query' => [
+                            'schemaPath' => $schemaPath,
+                        ],
                     ]
                 )
             );
@@ -471,9 +471,8 @@ class OrderClient extends AbstractClient
 
     /**
      * @param string $orderUuid
-     * @param array $data
+     * @param array  $data
      * @param string $locale
-     * @return void
      */
     public function createGovRegistration(string $orderUuid, array $data, string $locale): void
     {
@@ -486,12 +485,11 @@ class OrderClient extends AbstractClient
                 ),
                 [
                     'json' => $data,
-                    'query' =>[
-                        'locale' => $locale
-                    ]
+                    'query' => [
+                        'locale' => $locale,
+                    ],
                 ]
             );
-
         } catch (HttpException $exception) {
             throw $exception;
         }
@@ -499,9 +497,9 @@ class OrderClient extends AbstractClient
 
     /**
      * @param string $orderUuid
-     * @param array $data
+     * @param array  $data
      * @param string $locale
-     * @return void
+     *
      * @throws OrderNotFoundException
      */
     public function validateGovRegistration(string $orderUuid, array $data, string $locale): void
@@ -515,12 +513,11 @@ class OrderClient extends AbstractClient
                 ),
                 [
                     'json' => $data,
-                    'query' =>[
-                        'locale' => $locale
-                    ]
+                    'query' => [
+                        'locale' => $locale,
+                    ],
                 ]
             );
-
         } catch (HttpException $exception) {
             if ($exception->getStatusCode() === 404) {
                 throw new OrderNotFoundException();
@@ -531,13 +528,14 @@ class OrderClient extends AbstractClient
     }
 
     /**
-     * @param string $dateStart
+     * @param string      $dateStart
      * @param string|null $dateFinish
-     * @param array|null $excludedStatuses
+     * @param array|null  $excludedStatuses
      * @param string|null $isoCode
      * @param string|null $dateGroup
      * @param string|null $company
      * @param string|null $domain
+     *
      * @return int
      */
     public function getTotalVisasSold(
@@ -550,24 +548,23 @@ class OrderClient extends AbstractClient
         string $domain = null): int
     {
         try {
-            $response =  $this->request(
+            $response = $this->request(
                 Request::METHOD_GET,
                 '/api/orders/stats/total/visas/sold.json',
                 [
-                    "query"=> [
-                        "dateStart" => $dateStart,
-                        "dateFinish" => $dateFinish,
-                        "excludedStatuses" => $excludedStatuses,
-                        "isoCode" => $isoCode,
-                        "dateGroup" => $dateGroup,
-                        "company" => $company,
-                        "domain" => $domain
-                    ]
+                    'query' => [
+                        'dateStart' => $dateStart,
+                        'dateFinish' => $dateFinish,
+                        'excludedStatuses' => $excludedStatuses,
+                        'isoCode' => $isoCode,
+                        'dateGroup' => $dateGroup,
+                        'company' => $company,
+                        'domain' => $domain,
+                    ],
                 ]
             );
 
             return (int) $response->getBody()->getContents();
-
         } catch (HttpException $exception) {
             throw $exception;
         }
@@ -585,15 +582,16 @@ class OrderClient extends AbstractClient
                 Request::METHOD_POST,
                 '/api/orders/statuses.json',
                 [
-                    'json' => ["uuids" =>$orderUuidList]
+                    'json' => ['uuids' => $orderUuidList],
                 ]
             );
         $ordersStatuses = json_decode($response->getBody()->getContents());
 
         $mappedOrdersStatuses = [];
-        foreach ($ordersStatuses as $orderStatus){
+        foreach ($ordersStatuses as $orderStatus) {
             $mappedOrdersStatuses[$orderStatus->uuid->uuid] = $orderStatus->status;
         }
+
         return $mappedOrdersStatuses;
     }
 
@@ -609,15 +607,16 @@ class OrderClient extends AbstractClient
                 Request::METHOD_POST,
                 '/api/orders/by-uuids.json',
                 [
-                    'json' => ["uuids" =>$orderUuidList]
+                    'json' => ['uuids' => $orderUuidList],
                 ]
             );
         $orders = json_decode($response->getBody()->getContents());
 
         $mappedOrders = [];
-        foreach ($orders as $order){
+        foreach ($orders as $order) {
             $mappedOrders[$order->uuid] = $order;
         }
+
         return $mappedOrders;
     }
 }

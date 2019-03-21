@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use GuzzleHttp\RequestOptions;
-use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
+use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DocumentClient extends AbstractClient
@@ -46,6 +46,7 @@ class DocumentClient extends AbstractClient
      * @param string $type
      * @param string $identifier
      * @param string $filePath
+     *
      * @throws FileCanNotBeSentException
      */
     public function uploadDocument(string $objectId, string $type, string $identifier, string $filePath)
@@ -55,30 +56,28 @@ class DocumentClient extends AbstractClient
                 Request::METHOD_POST,
                 '/api/files.json',
                 [
-                    'multipart' =>[
+                    'multipart' => [
                         [
-                            'name'     => 'objectId',
-                            'contents' => $objectId
+                            'name' => 'objectId',
+                            'contents' => $objectId,
                         ],
                         [
-                            'name'     => 'type',
-                            'contents' => $type
+                            'name' => 'type',
+                            'contents' => $type,
                         ],
                         [
-                            'name'     => 'identifier',
-                            'contents' => $identifier
+                            'name' => 'identifier',
+                            'contents' => $identifier,
                         ],
                         [
-                            'name'     => 'rawDocument',
-                            'contents' => fopen($filePath, 'r')
-                        ]
-                    ]
+                            'name' => 'rawDocument',
+                            'contents' => fopen($filePath, 'r'),
+                        ],
+                    ],
                 ]
             );
         } catch (HttpException $exception) {
             throw new FileCanNotBeSentException();
         }
     }
-
-
 }

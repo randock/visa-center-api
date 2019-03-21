@@ -10,14 +10,15 @@ use Randock\Utils\Http\Exception\HttpException;
 class QueueClient extends AbstractClient
 {
     /**
-     * @param bool $revision
+     * @param bool        $revision
      * @param string|null $orderUuid
+     *
      * @return array
      */
     public function getPassportQueue(bool $revision = false, string $orderUuid = null)
     {
-        if(null!==$orderUuid){
-            $queryOrderUuid = ["orderUuid" => $orderUuid];
+        if (null !== $orderUuid) {
+            $queryOrderUuid = ['orderUuid' => $orderUuid];
         }
 
         try {
@@ -26,11 +27,10 @@ class QueueClient extends AbstractClient
                     Request::METHOD_GET,
                     '/api/queues/passport.json',
                     [
-                        "query" =>
-                            array_merge(
-                                ["revision" => $revision],
+                        'query' => array_merge(
+                                ['revision' => $revision],
                                 $queryOrderUuid ?? []
-                            )
+                            ),
                     ]
                 )
             );
@@ -43,12 +43,13 @@ class QueueClient extends AbstractClient
 
     /**
      * @param string|null $orderUuid
+     *
      * @return array
      */
     public function getPhotoQueue(string $orderUuid = null)
     {
-        if(null!==$orderUuid){
-            $queryOrderUuid = ["orderUuid" => $orderUuid];
+        if (null !== $orderUuid) {
+            $queryOrderUuid = ['orderUuid' => $orderUuid];
         }
 
         try {
@@ -57,7 +58,7 @@ class QueueClient extends AbstractClient
                     Request::METHOD_GET,
                     '/api/queues/photo.json',
                     [
-                        "query" => $queryOrderUuid ?? []
+                        'query' => $queryOrderUuid ?? [],
                     ]
                 )
             );
@@ -71,7 +72,7 @@ class QueueClient extends AbstractClient
     /**
      * @param string $traveler
      * @param string $identifier
-     * @param array $revisionChanges
+     * @param array  $revisionChanges
      */
     public function approvePassport(string $traveler, string $identifier, array $revisionChanges = [])
     {
@@ -85,7 +86,7 @@ class QueueClient extends AbstractClient
                 [
                     'json' => [
                         'identifier' => $identifier,
-                        'revisionChanges' => $revisionChanges
+                        'revisionChanges' => $revisionChanges,
                     ],
                 ]
             );
