@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\Utils\Http\Exception\FormErrorsException;
 use Randock\VisaCenterApi\Exception\OrderNotFoundException;
-use Randock\VisaCenterApi\Exception\CustomIssueNotFoundException;
 
 class OrderIssueClient extends AbstractClient
 {
@@ -36,7 +35,7 @@ class OrderIssueClient extends AbstractClient
 
     /**
      * @param string $message
-     * @param bool $orderEditable
+     * @param bool   $orderEditable
      * @param string $orderId
      *
      * @throws FormErrorsException
@@ -50,7 +49,7 @@ class OrderIssueClient extends AbstractClient
                 [
                     'json' => [
                         'message' => $message,
-                        'orderEditable' => $orderEditable
+                        'orderEditable' => $orderEditable,
                     ],
                 ]
             );
