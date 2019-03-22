@@ -620,4 +620,28 @@ class OrderClient extends AbstractClient
         }
         return $mappedOrders;
     }
+
+    /**
+     * @param string $orderUuid
+     *
+     * @throws OrderNotFoundException
+     *
+     * @return \stdClass
+     */
+    public function getProcessingDate(string $orderUuid): \stdClass
+    {
+        try {
+            return $this->toStdClass(
+                $this->request(
+                    Request::METHOD_GET,
+                    sprintf(
+                        '/api/orders/%s/processing-date.json',
+                        $orderUuid
+                    )
+                )
+            );
+        } catch (HttpException $exception) {
+            throw new OrderNotFoundException();
+        }
+    }
 }
