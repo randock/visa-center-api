@@ -46,7 +46,7 @@ class QueueClient extends AbstractClient
      *
      * @return array
      */
-    public function getPhotoQueue(string $orderUuid = null)
+    public function getPhotoQueue(string $orderUuid = null): array
     {
         if (null !== $orderUuid) {
             $queryOrderUuid = ['orderUuid' => $orderUuid];
@@ -60,6 +60,25 @@ class QueueClient extends AbstractClient
                     [
                         'query' => $queryOrderUuid ?? [],
                     ]
+                )
+            );
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+
+        return $response;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueuesCount(): array
+    {
+        try {
+            $response = $this->parseContentToArray(
+                $this->request(
+                    Request::METHOD_GET,
+                    '/api/queues/count.json'
                 )
             );
         } catch (HttpException $exception) {
