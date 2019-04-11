@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
+use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\Exception\TravelerNotFoundException;
 
@@ -57,6 +58,36 @@ class TravelerClient extends AbstractClient
                 throw new TravelerNotFoundException($exception->getMessage());
             }
             throw $exception;
+        }
+    }
+
+    /**
+     * @param array $travelersId
+     * @param int   $visaType
+     *
+     * @throws TravelerNotFoundException
+     *
+     * @return \stdClass
+     */
+    public function getReusableData(array $travelersId, int $visaType): \stdClass
+    {
+        try {
+            return $this->toStdClass(
+                $this->request(
+                    Request::METHOD_POST,
+                        '/api/travelers/reusable-data.json',
+                    [
+                        'query' => [
+                            'visaType' => $visaType,
+                        ],
+                        'json' => [
+                            'travelersId' => $travelersId,
+                        ],
+                    ]
+                )
+            );
+        } catch (HttpException $exception) {
+            throw new TravelerNotFoundException();
         }
     }
 }
