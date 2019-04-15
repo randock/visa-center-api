@@ -26,7 +26,7 @@ class VisaCenterTransaction implements VisaCenterTransactionInterface
     private $status;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $type;
 
@@ -36,7 +36,7 @@ class VisaCenterTransaction implements VisaCenterTransactionInterface
      * @param string      $uuid
      * @param Money       $price
      * @param string      $status
-     * @param null|string $type
+     * @param string|null $type
      */
     public function __construct(string $uuid, Money $price, string $status, ?string $type)
     {
@@ -98,7 +98,7 @@ class VisaCenterTransaction implements VisaCenterTransactionInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getType(): ?string
     {

@@ -128,15 +128,14 @@ class OrderClient extends AbstractClient
     }
 
     /**
-     * @param string $dateStart
+     * @param string      $dateStart
      * @param string|null $dateFinish
-     * @param array|null $excludedStatuses
+     * @param array|null  $excludedStatuses
      * @param string|null $isoCode
      * @param string|null $dateGroup
      * @param string|null $company
      * @param string|null $domain
      * @param string|null $arrivalDate
-     *
      * @param string|null $arrivalDateLowerBoundary
      *
      * @return array
@@ -151,8 +150,7 @@ class OrderClient extends AbstractClient
         string $domain = null,
         string $arrivalDate = null,
         string $arrivalDateLowerBoundary = null
-    ): array
-    {
+    ): array {
         try {
             $response = $this->request(
                 Request::METHOD_GET,
@@ -167,7 +165,7 @@ class OrderClient extends AbstractClient
                         'company' => $company,
                         'domain' => $domain,
                         'arrivalDate' => $arrivalDate,
-                        'arrivalDateLowerBoundary' => $arrivalDateLowerBoundary
+                        'arrivalDateLowerBoundary' => $arrivalDateLowerBoundary,
                     ],
                 ]
             );
@@ -251,9 +249,9 @@ class OrderClient extends AbstractClient
 
             return $this->requestLink($response->getHeader('Location')[0]);
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new OrderNotFoundException();
-            } elseif ($exception->getStatusCode() === 400) {
+            } elseif (400 === $exception->getStatusCode()) {
                 throw new OrderCommentContainsErrorException(
                     json_decode($exception->getBody())->errors
                 );
@@ -289,10 +287,10 @@ class OrderClient extends AbstractClient
 
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 400) {
+            if (400 === $exception->getStatusCode()) {
                 throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
-            if ($exception->getStatusCode() === 500) {
+            if (500 === $exception->getStatusCode()) {
                 throw new VisaCenterGetOrderFatalErrorException();
             }
             throw $exception;
@@ -311,10 +309,10 @@ class OrderClient extends AbstractClient
         try {
             $this->request(Request::METHOD_PATCH, sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 400) {
+            if (400 === $exception->getStatusCode()) {
                 throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
-            if ($exception->getStatusCode() === 500) {
+            if (500 === $exception->getStatusCode()) {
                 throw new VisaCenterGetOrderFatalErrorException();
             }
             throw $exception;
@@ -407,7 +405,7 @@ class OrderClient extends AbstractClient
                 sprintf('/api/pdfs/%d', $id)
             );
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new PdfNotFoundException($exception->getMessage());
             }
             throw $exception;
@@ -532,9 +530,9 @@ class OrderClient extends AbstractClient
                 ]
             );
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new OrderNotFoundException();
-            } elseif ($exception->getStatusCode() === 400) {
+            } elseif (400 === $exception->getStatusCode()) {
                 throw new GovRegistrationContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
             }
         }

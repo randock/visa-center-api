@@ -27,7 +27,7 @@ class TravelerClient extends AbstractClient
 
             return;
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new TravelerNotFoundException($exception->getMessage());
             }
             throw $exception;
@@ -54,7 +54,7 @@ class TravelerClient extends AbstractClient
                 )
             );
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new TravelerNotFoundException($exception->getMessage());
             }
             throw $exception;

@@ -8,6 +8,11 @@
       "Randock\\VisaCenterApi\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Randock\\VisaCenterApi\\": "tests/"
+    }
+  },
   "config": {
     "sort-packages": true,
     "platform": {
@@ -21,6 +26,7 @@
     "randock/utils": "dev-develop"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.4"
+    "friendsofphp/php-cs-fixer": "^2.4",
+    "phpunit/phpunit": "^5.0"
   }
 }

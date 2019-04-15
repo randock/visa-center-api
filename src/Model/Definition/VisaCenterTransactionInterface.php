@@ -32,7 +32,7 @@ interface VisaCenterTransactionInterface
      *
      * @return VisaCenterTransactionInterface
      */
-    public function setStatus(string $status): VisaCenterTransactionInterface;
+    public function setStatus(string $status): self;
 
     /**
      * @return Money
@@ -40,7 +40,7 @@ interface VisaCenterTransactionInterface
     public function getPrice(): Money;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getType(): ?string;
 }
