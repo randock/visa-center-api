@@ -10,6 +10,11 @@ use Randock\Utils\Http\AbstractClient as CommonAbstractClient;
 abstract class AbstractClient extends CommonAbstractClient
 {
     /**
+     * @var bool
+     */
+    protected $transform = false;
+
+    /**
      * OrderClient constructor.
      *
      * @param string $baseUri
@@ -48,6 +53,22 @@ abstract class AbstractClient extends CommonAbstractClient
                 $link
             )
         );
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTransform(): bool
+    {
+        return $this->transform;
+    }
+
+    /**
+     * @param bool $transform
+     */
+    public function setTransform(bool $transform): void
+    {
+        $this->transform = $transform;
     }
 
     /**

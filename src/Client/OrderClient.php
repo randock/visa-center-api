@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Randock\VisaCenterApi\Client;
 
 use Randock\Utils\Uuid\UuidUtils;
+use Randock\VisaCenterApi\Model\Order;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
@@ -82,14 +83,15 @@ class OrderClient extends AbstractClient
     /**
      * @param string $orderUuid
      *
+     * @throws \Exception
      * @throws OrderNotFoundException
      *
-     * @return \stdClass
+     * @return mixed
      */
-    public function getOrder(string $orderUuid): \stdClass
+    public function getOrder(string $orderUuid)
     {
         try {
-            return $this->toStdClass(
+            $order = $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
                     sprintf(
@@ -98,6 +100,12 @@ class OrderClient extends AbstractClient
                     )
                 )
             );
+
+            if ($this->getTransform()) {
+                $order = Order::fromStdClass($order);
+            }
+
+            return $order;
         } catch (HttpException $exception) {
             throw new OrderNotFoundException();
         }
@@ -106,14 +114,15 @@ class OrderClient extends AbstractClient
     /**
      * @param int $orderId
      *
+     * @throws \Exception
      * @throws OrderNotFoundException
      *
-     * @return \stdClass
+     * @return mixed
      */
-    public function getOrderByOrderId(int $orderId): \stdClass
+    public function getOrderByOrderId(int $orderId)
     {
         try {
-            return $this->toStdClass(
+            $order = $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
                     sprintf(
@@ -122,6 +131,12 @@ class OrderClient extends AbstractClient
                     )
                 )
             );
+
+            if ($this->getTransform()) {
+                $order = Order::fromStdClass($order);
+            }
+
+            return $order;
         } catch (HttpException $exception) {
             throw new OrderNotFoundException();
         }
