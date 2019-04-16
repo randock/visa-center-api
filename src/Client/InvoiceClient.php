@@ -44,7 +44,7 @@ class InvoiceClient extends AbstractClient
                 ]
             );
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 500) {
+            if (500 === $exception->getStatusCode()) {
                 throw new VisaCenterGetOrderFatalErrorException();
             }
             throw $exception;
@@ -65,7 +65,7 @@ class InvoiceClient extends AbstractClient
                     sprintf('/api/invoices/%s/orders/%s/pdf/send.json', $invoiceId, $orderUuid)
             );
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 500) {
+            if (500 === $exception->getStatusCode()) {
                 throw new VisaCenterGetOrderFatalErrorException();
             }
             throw $exception;

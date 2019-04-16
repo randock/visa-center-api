@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
+use Randock\VisaCenterApi\Model\Traveler;
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\Exception\TravelerNotFoundException;
@@ -27,7 +28,7 @@ class TravelerClient extends AbstractClient
 
             return;
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new TravelerNotFoundException($exception->getMessage());
             }
             throw $exception;
@@ -44,7 +45,7 @@ class TravelerClient extends AbstractClient
     public function getTraveler(string $uuid)
     {
         try {
-            return $this->toStdClass(
+            $traveler = $this->toStdClass(
                 $this->request(
                     'GET',
                     sprintf(
@@ -53,8 +54,14 @@ class TravelerClient extends AbstractClient
                     )
                 )
             );
+
+            if ($this->getTransform()) {
+                $traveler = Traveler::fromStdClass($traveler);
+            }
+
+            return $traveler;
         } catch (HttpException $exception) {
-            if ($exception->getStatusCode() === 404) {
+            if (404 === $exception->getStatusCode()) {
                 throw new TravelerNotFoundException($exception->getMessage());
             }
             throw $exception;

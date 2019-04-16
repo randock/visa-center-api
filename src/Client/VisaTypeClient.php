@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
+use Randock\VisaCenterApi\Model\VisaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\CollectionApiResponse;
+use Randock\Utils\Http\Exception\FormErrorsException;
 use Randock\VisaCenterApi\Exception\VisaTypeNotFoundException;
 
 class VisaTypeClient extends AbstractClient
@@ -54,12 +56,14 @@ class VisaTypeClient extends AbstractClient
     /**
      * @param int $id
      *
-     * @return \stdClass
+     * @throws VisaTypeNotFoundException
+     *
+     * @return mixed
      */
-    public function getVisaType(int $id): \stdClass
+    public function getVisaType(int $id)
     {
         try {
-            return $this->toStdClass(
+            $visaType = $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
                     sprintf(
@@ -68,6 +72,12 @@ class VisaTypeClient extends AbstractClient
                     )
                 )
             );
+
+            if ($this->getTransform()) {
+                $visaType = VisaType::fromStdClass($visaType);
+            }
+
+            return $visaType;
         } catch (HttpException $exception) {
             // custom exception if the visaType is not found
             if (Response::HTTP_NOT_FOUND === $exception->getStatusCode()) {
@@ -84,9 +94,9 @@ class VisaTypeClient extends AbstractClient
      *
      * @throws \Exception
      *
-     * @return \stdClass
+     * @return mixed
      */
-    public function updateVisaType($id, array $data): \stdClass
+    public function updateVisaType($id, array $data)
     {
         try {
             $this->request(
@@ -118,14 +128,14 @@ class VisaTypeClient extends AbstractClient
     }
 
     /**
-     * @param       $id
      * @param array $data
      *
-     * @throws \Exception
+     * @throws VisaTypeNotFoundException
+     * @throws FormErrorsException
      *
-     * @return \stdClass
+     * @return mixed
      */
-    public function createVisaType(array $data): \stdClass
+    public function createVisaType(array $data)
     {
         try {
             $response = $this->request(
@@ -155,6 +165,8 @@ class VisaTypeClient extends AbstractClient
 
     /**
      * @param int $id
+     *
+     * @throws VisaTypeNotFoundException
      */
     public function deleteVisaType(int $id)
     {
