@@ -11,6 +11,15 @@ use Randock\VisaCenterApi\Model\ValueObject\OrderDetails;
  */
 class Order
 {
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_HOLD = 'hold';
+    public const STATUS_PROCESSING = 'processing';
+    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_SENT_TO_CUSTOMER = 'sent_to_customer';
+    public const STATUS_SENT_ISSUES_TO_CUSTOMER = 'sent_issues_to_customer';
+    public const STATUS_DELETED = 'deleted';
+    public const STATUS_PROCESSED = 'processed';
+    
     /**
      * @var string
      */
