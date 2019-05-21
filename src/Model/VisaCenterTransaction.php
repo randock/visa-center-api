@@ -10,7 +10,7 @@ use Randock\VisaCenterApi\Model\Definition\VisaCenterTransactionInterface;
 
 class VisaCenterTransaction implements VisaCenterTransactionInterface
 {
-    public const TRANSACTION_TYPE_PREPAID = 'prepaid';
+    public const TYPE_PREPAID = 'prepaid';
 
     /**
      * @var string
