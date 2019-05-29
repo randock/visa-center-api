@@ -38,14 +38,25 @@ class VisaTypeClient extends AbstractClient
         ];
 
         $options['query'] = array_merge($options['query'], $queryParams);
+        $data = $this->toStdClass(
+            $this->request(
+                Request::METHOD_GET,
+                '/api/visatypes.json',
+                $options
+            )
+        );
+
+        if ($this->getTransform()) {
+            $transformed = [];
+            foreach ($data->_embedded->items as $item) {
+                $transformed[] = VisaType::fromStdClass($item);
+            }
+
+            $data->_embedded->items = $transformed;
+        }
+
         $response = new CollectionApiResponse(
-            $this->toStdClass(
-                $this->request(
-                    Request::METHOD_GET,
-                    '/api/visatypes.json',
-                    $options
-                )
-            ),
+            $data,
             $this,
             $fetchMore
         );
