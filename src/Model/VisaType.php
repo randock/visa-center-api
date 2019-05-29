@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Model;
 
+use Randock\ValueObject\Country\Country;
+
 class VisaType
 {
     /**
@@ -27,7 +29,7 @@ class VisaType
     private $purpose;
 
     /**
-     * @var \stdClass
+     * @var Country
      */
     private $country;
 
@@ -58,7 +60,7 @@ class VisaType
      * @param array       $visaTypeNationalities
      * @param string      $type
      * @param string      $purpose
-     * @param \stdClass   $country
+     * @param Country     $country
      * @param int         $averageDeliveryTime
      * @param int         $maxDeliveryTime
      * @param string|null $visaForm
@@ -69,7 +71,7 @@ class VisaType
         array $visaTypeNationalities,
         string $type,
         string $purpose,
-        \stdClass $country,
+        Country $country,
         int $averageDeliveryTime,
         int $maxDeliveryTime,
         ?string $visaForm = null,
@@ -104,7 +106,9 @@ class VisaType
             $visaTypeNationalities,
             $data->type,
             $data->purpose,
-            $data->country,
+            new Country(
+                $data->country->isoCode
+            ),
             $data->averageDeliveryTime,
             $data->maxDeliveryTime,
             $data->visaForm,
@@ -139,7 +143,7 @@ class VisaType
     }
 
     /**
-     * @return array
+     * @return VisaTypeNationality[]
      */
     public function getVisaTypeNationalities(): array
     {
@@ -147,9 +151,9 @@ class VisaType
     }
 
     /**
-     * @return \stdClass
+     * @return Country
      */
-    public function getCountry(): \stdClass
+    public function getCountry(): Country
     {
         return $this->country;
     }
