@@ -208,6 +208,14 @@ class Order
     }
 
     /**
+     * @return array|null
+     */
+    public function getOrderDetailsSchema(): ?array
+    {
+        return null === $this->orderDetails || empty($this->orderDetails->toArray()) ? null : $this->orderDetails->toArray();
+    }
+
+    /**
      * @param \stdClass $data
      *
      * @throws \Exception
