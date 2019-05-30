@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Model;
 
+use Randock\ValueObject\Money\Money;
+use Randock\ValueObject\Money\Currency;
+use Randock\ValueObject\Country\Nationality;
+
 class VisaTypeNationality
 {
     /**
@@ -54,21 +58,21 @@ class VisaTypeNationality
     /**
      * VisaTypeNationality constructor.
      *
-     * @param string         $id
-     * @param \stdClass      $nationality
-     * @param int            $numEntries
-     * @param int            $validDays
-     * @param int            $stayDays
-     * @param bool           $perVisitStayDays
-     * @param string         $startValidDays
-     * @param int            $entryValidityDays
-     * @param bool           $useBounded
-     * @param \stdClass|null $price
-     * @param int|null       $definedProcessingDays
+     * @param string      $id
+     * @param Nationality $nationality
+     * @param int         $numEntries
+     * @param int         $validDays
+     * @param int         $stayDays
+     * @param bool        $perVisitStayDays
+     * @param string      $startValidDays
+     * @param int         $entryValidityDays
+     * @param bool        $useBounded
+     * @param Money|null  $price
+     * @param int|null    $definedProcessingDays
      */
     private function __construct(
         int $id,
-        \stdClass $nationality,
+        Nationality $nationality,
         int $numEntries,
         int $validDays,
         int $stayDays,
@@ -76,7 +80,7 @@ class VisaTypeNationality
         string $startValidDays,
         int $entryValidityDays,
         bool $useBounded,
-        \stdClass $price = null,
+        Money $price = null,
         int $definedProcessingDays = null
     ) {
         $this->id = $id;
@@ -101,7 +105,9 @@ class VisaTypeNationality
     {
         $visaTypeNationality = new self(
             $data->id,
-            $data->nationality,
+            new Nationality(
+                $data->nationality->isoCode
+            ),
             $data->numEntries,
             $data->validDays,
             $data->stayDays,
@@ -109,7 +115,7 @@ class VisaTypeNationality
             $data->startValidDays,
             $data->entryValidityDays,
             $data->useBounded,
-            $data->price ?? null,
+            new $data->price() ? new Money($data->price->amount, new Currency($data->price->currency->currencyCode)) : null,
             $data->definedProcessingDays ?? null
         );
 
@@ -125,9 +131,9 @@ class VisaTypeNationality
     }
 
     /**
-     * @return \stdClass
+     * @return Nationality
      */
-    public function getNationality(): \stdClass
+    public function getNationality(): Nationality
     {
         return $this->nationality;
     }
@@ -189,9 +195,9 @@ class VisaTypeNationality
     }
 
     /**
-     * @return \stdClass|null
+     * @return Money|null
      */
-    public function getPrice(): ?\stdClass
+    public function getPrice(): ?Money
     {
         return $this->price;
     }
