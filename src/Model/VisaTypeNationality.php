@@ -15,7 +15,7 @@ class VisaTypeNationality
      */
     private $id;
     /**
-     * @var \stdClass
+     * @var Nationality
      */
     private $nationality;
     /**
@@ -47,7 +47,7 @@ class VisaTypeNationality
      */
     private $useBounded;
     /**
-     * @var \stdClass|null
+     * @var Money|null
      */
     private $price;
     /**
@@ -115,7 +115,7 @@ class VisaTypeNationality
             $data->startValidDays,
             $data->entryValidityDays,
             $data->useBounded,
-            new $data->price() ? new Money($data->price->amount, new Currency($data->price->currency->currencyCode)) : null,
+            isset($data->price) ? new Money($data->price->amount, new Currency($data->price->currency->currencyCode)) : null,
             $data->definedProcessingDays ?? null
         );
 
