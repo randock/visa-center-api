@@ -17,7 +17,7 @@ class TransactionClient extends AbstractClient
      * @param string $orderUuid
      * @param string $transactionUuid
      *
-     * @throws VisaCenterTransactionNotFoundException
+     * @throws TransactionNotFoundException
      *
      * @return TransactionInterface
      */
@@ -40,7 +40,7 @@ class TransactionClient extends AbstractClient
      * @param string $orderUuid
      * @param array  $transactionData
      *
-     * @throws VisaCenterTransactionCanNotBeCreatedException
+     * @throws TransactionCanNotBeCreatedException
      *
      * @return TransactionInterface
      */
@@ -72,7 +72,7 @@ class TransactionClient extends AbstractClient
      * @param string $transactionUuid
      * @param array  $transactionData
      *
-     * @throws VisaCenterTransactionCanNotBeUpdatedException
+     * @throws TransactionCanNotBeUpdatedException
      *
      * @return TransactionInterface
      */
@@ -102,7 +102,7 @@ class TransactionClient extends AbstractClient
     /**
      * @param string $resource
      *
-     * @throws VisaCenterTransactionNotFoundException
+     * @throws TransactionNotFoundException
      *
      * @return TransactionInterface
      */
