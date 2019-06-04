@@ -230,6 +230,12 @@ class Order
             $travelers[] = Traveler::fromStdClass($traveler);
         }
 
+        $transactions = [];
+
+        foreach ($data->transactions as $transaction) {
+            $transactions[] = Transaction::fromStdClass($transaction);
+        }
+
         $order = new self(
             $data->uuid,
             $data->orderId,
@@ -247,7 +253,7 @@ class Order
             $data->validated,
             $data->govRegistrationId ?? null,
             $data->govRegistrationCompleted ?? false,
-            $data->transactions ?? [],
+            $transactions,
             $data->images ?? [],
             $data->emails ?? [],
             $data->pdfs ?? [],

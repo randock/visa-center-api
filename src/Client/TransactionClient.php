@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
-use Randock\VisaCenterApi\Model\VisaCenterTransaction;
+use Randock\VisaCenterApi\Model\Transaction;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Randock\VisaCenterApi\Model\Definition\VisaCenterTransactionInterface;
-use Randock\VisaCenterApi\Exception\VisaCenterTransactionNotFoundException;
-use Randock\VisaCenterApi\Exception\VisaCenterTransactionCanNotBeCreatedException;
-use Randock\VisaCenterApi\Exception\VisaCenterTransactionCanNotBeUpdatedException;
+use Randock\VisaCenterApi\Model\Definition\TransactionInterface;
+use Randock\VisaCenterApi\Exception\TransactionNotFoundException;
+use Randock\VisaCenterApi\Exception\TransactionCanNotBeCreatedException;
+use Randock\VisaCenterApi\Exception\TransactionCanNotBeUpdatedException;
 
 class TransactionClient extends AbstractClient
 {
@@ -19,9 +19,9 @@ class TransactionClient extends AbstractClient
      *
      * @throws VisaCenterTransactionNotFoundException
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
-    public function get(string $orderUuid, string $transactionUuid): VisaCenterTransactionInterface
+    public function get(string $orderUuid, string $transactionUuid): TransactionInterface
     {
         try {
             return $this->getByResource(
@@ -32,7 +32,7 @@ class TransactionClient extends AbstractClient
                 )
             );
         } catch (HttpException $e) {
-            throw new VisaCenterTransactionNotFoundException();
+            throw new TransactionNotFoundException();
         }
     }
 
@@ -42,9 +42,9 @@ class TransactionClient extends AbstractClient
      *
      * @throws VisaCenterTransactionCanNotBeCreatedException
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
-    public function create(string $orderUuid, array $transactionData): VisaCenterTransactionInterface
+    public function create(string $orderUuid, array $transactionData): TransactionInterface
     {
         try {
             $transactionResource = $this->request(
@@ -63,7 +63,7 @@ class TransactionClient extends AbstractClient
 
             return $this->getByResource($transactionUrlVisaCenter['path']);
         } catch (HttpException $e) {
-            throw new VisaCenterTransactionCanNotBeCreatedException();
+            throw new TransactionCanNotBeCreatedException();
         }
     }
 
@@ -74,12 +74,12 @@ class TransactionClient extends AbstractClient
      *
      * @throws VisaCenterTransactionCanNotBeUpdatedException
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
-    public function patch(string $orderUuid, string $transactionUuid, array $transactionData): VisaCenterTransactionInterface
+    public function patch(string $orderUuid, string $transactionUuid, array $transactionData): TransactionInterface
     {
         try {
-            return VisaCenterTransaction::fromStdClass(
+            return Transaction::fromStdClass(
                 $this->toStdClass(
                     $this->request(
                         'PATCH',
@@ -95,7 +95,7 @@ class TransactionClient extends AbstractClient
                 )
             );
         } catch (HttpException $e) {
-            throw new VisaCenterTransactionCanNotBeUpdatedException();
+            throw new TransactionCanNotBeUpdatedException();
         }
     }
 
@@ -104,12 +104,12 @@ class TransactionClient extends AbstractClient
      *
      * @throws VisaCenterTransactionNotFoundException
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
-    private function getByResource(string $resource): VisaCenterTransactionInterface
+    private function getByResource(string $resource): TransactionInterface
     {
         try {
-            return VisaCenterTransaction::fromStdClass(
+            return Transaction::fromStdClass(
                 $this->toStdClass(
                     $this->request(
                         'GET',
@@ -118,7 +118,7 @@ class TransactionClient extends AbstractClient
                 )
             );
         } catch (HttpException $e) {
-            throw new VisaCenterTransactionNotFoundException();
+            throw new TransactionNotFoundException();
         }
     }
 }

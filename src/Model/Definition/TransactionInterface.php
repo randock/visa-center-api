@@ -6,7 +6,7 @@ namespace Randock\VisaCenterApi\Model\Definition;
 
 use Randock\ValueObject\Money\Money;
 
-interface VisaCenterTransactionInterface
+interface TransactionInterface
 {
     /**
      * Payment visaCenter transaction status.
@@ -30,7 +30,7 @@ interface VisaCenterTransactionInterface
     /**
      * @param string $status
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
     public function setStatus(string $status): self;
 

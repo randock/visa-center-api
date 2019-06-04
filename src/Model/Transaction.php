@@ -6,9 +6,9 @@ namespace Randock\VisaCenterApi\Model;
 
 use Randock\ValueObject\Money\Money;
 use Randock\ValueObject\Money\Currency;
-use Randock\VisaCenterApi\Model\Definition\VisaCenterTransactionInterface;
+use Randock\VisaCenterApi\Model\Definition\TransactionInterface;
 
-class VisaCenterTransaction implements VisaCenterTransactionInterface
+class Transaction implements TransactionInterface
 {
     public const TYPE_PREPAID = 'prepaid';
 
@@ -33,7 +33,7 @@ class VisaCenterTransaction implements VisaCenterTransactionInterface
     private $type;
 
     /**
-     * VisaCenterTransaction constructor.
+     * Transaction constructor.
      *
      * @param string      $uuid
      * @param Money       $price
@@ -51,9 +51,9 @@ class VisaCenterTransaction implements VisaCenterTransactionInterface
     /**
      * @param \stdClass|null $data
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
-    public static function fromStdClass(\stdClass $data = null): VisaCenterTransactionInterface
+    public static function fromStdClass(\stdClass $data = null): TransactionInterface
     {
         return new self(
             $data->uuid,
@@ -82,9 +82,9 @@ class VisaCenterTransaction implements VisaCenterTransactionInterface
     /**
      * @param string $status
      *
-     * @return VisaCenterTransactionInterface
+     * @return TransactionInterface
      */
-    public function setStatus(string $status): VisaCenterTransactionInterface
+    public function setStatus(string $status): TransactionInterface
     {
         $this->status = $status;
 

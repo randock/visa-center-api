@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Exception;
 
-class VisaCenterTransactionCanNotBeUpdatedException extends \Exception
+class TransactionCanNotBeUpdatedException extends \Exception
 {
     /**
-     * VisaCenterTransactionCanNotBeUpdatedException constructor.
+     * TransactionCanNotBeUpdatedException constructor.
      */
     public function __construct()
     {
