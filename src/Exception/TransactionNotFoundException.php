@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Exception;
 
-class VisaCenterTransactionNotFoundException extends \Exception
+class TransactionNotFoundException extends \Exception
 {
     /**
-     * VisaCenterTransactionNotFoundException constructor.
+     * TransactionNotFoundException constructor.
      */
     public function __construct()
     {
