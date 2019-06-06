@@ -8,6 +8,10 @@ use Randock\ValueObject\DynamicObjectStorage;
 
 /**
  * Class TravelerDetails.
+ *
+ * @method string getAllFirstNames()
+ * @method string getLastName()
+ * @method string getNationality()
  */
 class TravelerDetails extends DynamicObjectStorage
 {
