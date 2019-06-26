@@ -131,7 +131,7 @@ class VisaTypeTest extends TestCase
     public static function getStdClassObject()
     {
         return json_decode('[{
-                "id": 1
+                "id": 1,
                 "nationality": {"isoCode": "NL"},
                 "price": {
                     "amount": 1150.00,
@@ -148,7 +148,7 @@ class VisaTypeTest extends TestCase
                 "entryValidityDays": 30,
                 "definedProcessingDays": 5
             }, {
-                "id": 2
+                "id": 2,
                 "nationality": {"isoCode": "GB"},
                 "price": {
                     "amount": 1150.00,
