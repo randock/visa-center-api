@@ -669,4 +669,41 @@ class OrderClient extends AbstractClient
             throw new OrderNotFoundException();
         }
     }
+
+    /**
+     * @param array $ordersId
+     * @param int $visaType
+     *
+     * @return array
+     * @throws OrderNotFoundException
+     *
+     */
+    public function getReusableData(array $ordersId, int $visaType): array
+    {
+        try {
+            $response = $this->request(
+                Request::METHOD_POST,
+                '/api/orders/reusable-data.json',
+                [
+                    'query' => [
+                        'visaType' => $visaType,
+                    ],
+                    'json' => [
+                        'ordersId' => $ordersId,
+                    ],
+                ]
+            );
+
+            $contents = json_decode($response->getBody()->getContents());
+            $mappedData = [];
+
+            foreach ($contents as $data) {
+                $mappedData[] = $data;
+            }
+
+            return $mappedData;
+        } catch (HttpException $exception) {
+            throw new OrderNotFoundException();
+        }
+    }
 }
