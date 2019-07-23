@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12c416cc4c28df09dccd9eafc0eff50e",
+    "content-hash": "3a90e78299af80d40ed01c9ffa01fad7",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1391,16 +1391,16 @@
         },
         {
             "name": "randock/utils",
-            "version": "dev-develop",
+            "version": "0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/randock/utils.git",
-                "reference": "79f7a2fb856b3562ec7634ac5d270ac6ef1380eb"
+                "reference": "d1e132c62facffd5c35fbb335628d4c873aacbef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/randock/utils/zipball/79f7a2fb856b3562ec7634ac5d270ac6ef1380eb",
-                "reference": "79f7a2fb856b3562ec7634ac5d270ac6ef1380eb",
+                "url": "https://api.github.com/repos/randock/utils/zipball/d1e132c62facffd5c35fbb335628d4c873aacbef",
+                "reference": "d1e132c62facffd5c35fbb335628d4c873aacbef",
                 "shasum": ""
             },
             "require": {
@@ -1424,20 +1424,20 @@
                 "MIT"
             ],
             "description": "Randock Utils",
-            "time": "2018-04-18T13:53:21+00:00"
+            "time": "2019-06-13T11:40:51+00:00"
         },
         {
             "name": "randock/value-object",
-            "version": "dev-develop",
+            "version": "0.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/randock/value-object.git",
-                "reference": "737537769a821918a7dedcc02b2c698404fb549b"
+                "reference": "f93fb7a347cd372029e728946cc511ad8bb9bb72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/randock/value-object/zipball/737537769a821918a7dedcc02b2c698404fb549b",
-                "reference": "737537769a821918a7dedcc02b2c698404fb549b",
+                "url": "https://api.github.com/repos/randock/value-object/zipball/f93fb7a347cd372029e728946cc511ad8bb9bb72",
+                "reference": "f93fb7a347cd372029e728946cc511ad8bb9bb72",
                 "shasum": ""
             },
             "require": {
@@ -1459,7 +1459,7 @@
                 "MIT"
             ],
             "description": "Randock Value Objects",
-            "time": "2019-03-30T19:16:19+00:00"
+            "time": "2019-07-23T10:08:59+00:00"
         },
         {
             "name": "symfony/debug",
@@ -2036,7 +2036,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3340,8 +3340,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -4428,10 +4428,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "randock/value-object": 20,
-        "randock/utils": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
