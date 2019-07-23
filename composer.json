@@ -22,8 +22,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "randock/value-object": "dev-develop",
-    "randock/utils": "dev-develop"
+    "randock/utils": "^0.0.2",
+    "randock/value-object": "^0.0.9"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.4",
