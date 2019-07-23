@@ -671,14 +671,14 @@ class OrderClient extends AbstractClient
     }
 
     /**
-     * @param array $ordersId
+     * @param array $orderIds
      * @param int $visaType
      *
      * @return array
      * @throws OrderNotFoundException
      *
      */
-    public function getReusableData(array $ordersId, int $visaType): array
+    public function getReusableData(array $orderIds, int $visaType): array
     {
         try {
             $response = $this->request(
@@ -689,7 +689,7 @@ class OrderClient extends AbstractClient
                         'visaType' => $visaType,
                     ],
                     'json' => [
-                        'ordersId' => $ordersId,
+                        'orderIds' => $orderIds,
                     ],
                 ]
             );
