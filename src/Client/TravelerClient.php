@@ -82,7 +82,7 @@ class TravelerClient extends AbstractClient
             return $this->toStdClass(
                 $this->request(
                     Request::METHOD_POST,
-                        '/api/travelers/reusable-data.json',
+                    '/api/travelers/reusable-data.json',
                     [
                         'query' => [
                             'visaType' => $visaType,

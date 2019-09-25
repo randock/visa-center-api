@@ -571,8 +571,8 @@ class OrderClient extends AbstractClient
         string $isoCode = null,
         string $dateGroup = null,
         string $company = null,
-        string $domain = null): int
-    {
+        string $domain = null
+    ): int {
         try {
             $response = $this->request(
                 Request::METHOD_GET,

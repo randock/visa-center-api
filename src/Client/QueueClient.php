@@ -28,8 +28,8 @@ class QueueClient extends AbstractClient
                     '/api/queues/passport.json',
                     [
                         'query' => array_merge(
-                                ['revision' => $revision],
-                                $queryOrderUuid ?? []
+                            ['revision' => $revision],
+                            $queryOrderUuid ?? []
                             ),
                     ]
                 )

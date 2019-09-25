@@ -80,4 +80,43 @@ class DocumentClient extends AbstractClient
             throw new FileCanNotBeSentException();
         }
     }
+
+    /**
+     * @param string $documentId
+     * @param string $type
+     * @param string $filePath
+     *
+     * @throws FileCanNotBeSentException
+     */
+    public function uploadDocumentCropped(string $documentId, string $type, string $filePath = null): void
+    {
+        if (null!== $filePath) {
+            $file = [
+                'name' => 'rawDocument',
+                'contents' => null === $filePath ? fopen($filePath, 'r') : null,
+            ];
+        }
+
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                '/api/files/cropped.json',
+                [
+                    'multipart' => [
+                        [
+                            'name' => 'documentId',
+                            'contents' => $documentId,
+                        ],
+                        [
+                            'name' => 'ratio',
+                            'contents' => $type,
+                        ],
+                        $file ?? []
+                    ]
+                ]
+            );
+        } catch (HttpException $exception) {
+            throw new FileCanNotBeSentException();
+        }
+    }
 }
