@@ -20,9 +20,9 @@ class ProvinceClient extends AbstractClient
         ];
 
         return $this->toStdClass($this->request(
-                    Request::METHOD_GET,
-                    '/api/provinces.json',
-                    $options
+            Request::METHOD_GET,
+            '/api/provinces.json',
+            $options
                 ));
     }
 }

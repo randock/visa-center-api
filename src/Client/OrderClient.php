@@ -571,8 +571,8 @@ class OrderClient extends AbstractClient
         string $isoCode = null,
         string $dateGroup = null,
         string $company = null,
-        string $domain = null): int
-    {
+        string $domain = null
+    ): int {
         try {
             $response = $this->request(
                 Request::METHOD_GET,
@@ -672,11 +672,11 @@ class OrderClient extends AbstractClient
 
     /**
      * @param array $orderIds
-     * @param int $visaType
+     * @param int   $visaType
      *
-     * @return array
      * @throws OrderNotFoundException
      *
+     * @return array
      */
     public function getReusableData(array $orderIds, int $visaType): array
     {
