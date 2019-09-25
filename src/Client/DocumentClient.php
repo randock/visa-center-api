@@ -82,38 +82,42 @@ class DocumentClient extends AbstractClient
     }
 
     /**
-     * @param string $documentId
-     * @param string $type
-     * @param string $filePath
+     * @param string      $documentId
+     * @param string      $filePath
+     * @param string|null $ratio
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocumentCropped(string $documentId, string $type, string $filePath = null): void
+    public function uploadDocumentCropped(string $documentId, string $filePath = null, string $ratio = null): void
     {
-        if (null!== $filePath) {
-            $file = [
-                'name' => 'rawDocument',
-                'contents' => null === $filePath ? fopen($filePath, 'r') : null,
+        $multipart =
+            [
+                'multipart' => [
+                    [
+                        'name' => 'documentId',
+                        'contents' => $documentId,
+                    ],
+                ],
             ];
+        if (null !== $filePath) {
+            $multipart = array_merge($multipart,
+                [
+                    [
+                        'name' => 'ratio',
+                        'contents' => $ratio,
+                    ],
+                    [
+                        'name' => 'rawDocument',
+                        'contents' => null === $filePath ? fopen($filePath, 'r') : null,
+                    ],
+                ]);
         }
 
         try {
             $this->request(
                 Request::METHOD_POST,
                 '/api/files/cropped.json',
-                [
-                    'multipart' => [
-                        [
-                            'name' => 'documentId',
-                            'contents' => $documentId,
-                        ],
-                        [
-                            'name' => 'ratio',
-                            'contents' => $type,
-                        ],
-                        $file ?? []
-                    ]
-                ]
+                $multipart
             );
         } catch (HttpException $exception) {
             throw new FileCanNotBeSentException();

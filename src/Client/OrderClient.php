@@ -672,11 +672,11 @@ class OrderClient extends AbstractClient
 
     /**
      * @param array $orderIds
-     * @param int $visaType
+     * @param int   $visaType
      *
-     * @return array
      * @throws OrderNotFoundException
      *
+     * @return array
      */
     public function getReusableData(array $orderIds, int $visaType): array
     {
