@@ -83,12 +83,12 @@ class DocumentClient extends AbstractClient
 
     /**
      * @param string      $documentId
-     * @param string      $filePath
-     * @param string|null $ratio
+     * @param string      $ratio
+     * @param string|null $filePath
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocumentCropped(string $documentId, string $filePath = null, string $ratio = null): void
+    public function uploadDocumentCropped(string $documentId, string $ratio, string $filePath = null): void
     {
         $multipart =
             [
@@ -97,15 +97,15 @@ class DocumentClient extends AbstractClient
                         'name' => 'documentId',
                         'contents' => $documentId,
                     ],
+                    [
+                        'name' => 'ratio',
+                        'contents' => $ratio,
+                    ],
                 ],
             ];
         if (null !== $filePath) {
             $multipart = array_merge($multipart,
                 [
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio,
-                    ],
                     [
                         'name' => 'rawDocument',
                         'contents' => null === $filePath ? fopen($filePath, 'r') : null,
