@@ -92,4 +92,27 @@ class Traveler
     {
         return $this->applicationId;
     }
+
+    /**
+     * @return string
+     */
+    public function getFirstname(): string
+    {
+        if (null !== $this->getTravelerDetails()->getAllFirstNames()) {
+            return $this->getTravelerDetails()->getAllFirstNames();
+        }
+        if (null !== $this->getTravelerDetails()->getFirstname()) {
+            return $this->getTravelerDetails()->getFirstname();
+        }
+        if (null !== $this->getTravelerDetails()->getName()) {
+            if (null !== $this->getTravelerDetails()->getName()->getAllFirstNames()) {
+                return $this->getTravelerDetails()->getName()->getAllFirstNames();
+            }
+        }
+        if (null !== $this->getTravelerDetails()->getCommon()) {
+            if (null !== $this->getTravelerDetails()->getCommon()->getAllFirstNames()) {
+                return $this->getTravelerDetails()->getCommon()->getAllFirstNames();
+            }
+        }
+    }
 }
