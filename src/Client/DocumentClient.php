@@ -23,13 +23,18 @@ class DocumentClient extends AbstractClient
      *
      * @return string
      */
-    public function getFile(int $fileId, string $tmpFileName): string
+    public function getFile(int $fileId, string $tmpFileName, string $ratio = null): string
     {
+        if (null !== $ratio) {
+            $query = ['ratio' => $ratio];
+        }
+
         try {
             $this->request(
                 Request::METHOD_GET,
                 sprintf('api/files/%d', $fileId),
                 [
+                    'query' => $query ?? [],
                     RequestOptions::SINK => $tmpFileName,
                     RequestOptions::TIMEOUT => 30.0,
                 ]
@@ -82,25 +87,23 @@ class DocumentClient extends AbstractClient
     }
 
     /**
-     * @param string      $documentId
+     * @param int         $documentId
      * @param string      $ratio
      * @param string|null $filePath
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocumentCropped(string $documentId, string $ratio, string $filePath = null): void
+    public function uploadDocumentCropped(int $documentId, string $ratio, string $filePath = null, bool $checked = false): void
     {
         $multipart =
             [
-                'multipart' => [
-                    [
-                        'name' => 'documentId',
-                        'contents' => $documentId,
-                    ],
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio,
-                    ],
+                [
+                    'name' => 'documentId',
+                    'contents' => $documentId,
+                ],
+                [
+                    'name' => 'ratio',
+                    'contents' => $ratio,
                 ],
             ];
         if (null !== $filePath) {
@@ -108,7 +111,11 @@ class DocumentClient extends AbstractClient
                 [
                     [
                         'name' => 'rawDocument',
-                        'contents' => null === $filePath ? fopen($filePath, 'r') : null,
+                        'contents' => null !== $filePath ? fopen($filePath, 'r') : null,
+                    ],
+                    [
+                        'name' => 'checked',
+                        'contents' => $checked,
                     ],
                 ]);
         }
@@ -117,7 +124,7 @@ class DocumentClient extends AbstractClient
             $this->request(
                 Request::METHOD_POST,
                 '/api/files/cropped.json',
-                $multipart
+                ['multipart' => $multipart]
             );
         } catch (HttpException $exception) {
             throw new FileCanNotBeSentException();

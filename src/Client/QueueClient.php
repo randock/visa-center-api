@@ -42,11 +42,12 @@ class QueueClient extends AbstractClient
     }
 
     /**
+     * @param bool        $revision
      * @param string|null $orderUuid
      *
      * @return array
      */
-    public function getPhotoQueue(string $orderUuid = null): array
+    public function getPhotoQueue(bool $revision = false, string $orderUuid = null): array
     {
         if (null !== $orderUuid) {
             $queryOrderUuid = ['orderUuid' => $orderUuid];
@@ -58,7 +59,10 @@ class QueueClient extends AbstractClient
                     Request::METHOD_GET,
                     '/api/queues/photo.json',
                     [
-                        'query' => $queryOrderUuid ?? [],
+                        'query' => array_merge(
+                            ['revision' => $revision],
+                            $queryOrderUuid ?? []
+                        ),
                     ]
                 )
             );
