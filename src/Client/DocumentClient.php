@@ -21,13 +21,18 @@ class DocumentClient extends AbstractClient
      * @param int         $fileId
      * @param string      $tmpFileName
      * @param string|null $ratio
+     * @param string|null $countryCode
      *
      * @return string
      */
-    public function getFile(int $fileId, string $tmpFileName, string $ratio = null): string
+    public function getFile(int $fileId, string $tmpFileName, string $ratio = null, string $countryCode = null): string
     {
         if (null !== $ratio) {
             $query = ['ratio' => $ratio];
+        }
+
+        if (null !== $countryCode) {
+            $query = ['countryCode' => $countryCode];
         }
 
         try {
@@ -90,12 +95,13 @@ class DocumentClient extends AbstractClient
     /**
      * @param int         $documentId
      * @param string      $ratio
+     * @param int|null    $minWidth
      * @param string|null $filePath
      * @param bool        $checked
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocumentCropped(int $documentId, string $ratio, string $filePath = null, bool $checked = false): void
+    public function uploadDocumentCropped(int $documentId, string $ratio, int $minWidth = null, string $filePath = null, bool $checked = false): void
     {
         $multipart =
             [
@@ -108,6 +114,17 @@ class DocumentClient extends AbstractClient
                     'contents' => $ratio,
                 ],
             ];
+
+        if (null !== $minWidth) {
+            $multipart = array_merge($multipart,
+                [
+                    [
+                        'name' => 'minWidth',
+                        'contents' => $minWidth,
+                    ],
+                ]);
+        }
+
         if (null !== $filePath) {
             $multipart = array_merge($multipart,
                 [
