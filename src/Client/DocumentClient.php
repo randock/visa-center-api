@@ -18,8 +18,9 @@ class DocumentClient extends AbstractClient
     public const TEMP_NAME_PREFIX = '/tmpPhotoPrefix';
 
     /**
-     * @param int    $fileId
-     * @param string $tmpFileName
+     * @param int         $fileId
+     * @param string      $tmpFileName
+     * @param string|null $ratio
      *
      * @return string
      */
@@ -54,7 +55,7 @@ class DocumentClient extends AbstractClient
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocument(string $objectId, string $type, string $identifier, string $filePath)
+    public function uploadDocument(string $objectId, string $type, string $identifier, string $filePath): void
     {
         try {
             $this->request(
@@ -90,6 +91,7 @@ class DocumentClient extends AbstractClient
      * @param int         $documentId
      * @param string      $ratio
      * @param string|null $filePath
+     * @param bool        $checked
      *
      * @throws FileCanNotBeSentException
      */
@@ -111,7 +113,7 @@ class DocumentClient extends AbstractClient
                 [
                     [
                         'name' => 'rawDocument',
-                        'contents' => null !== $filePath ? fopen($filePath, 'r') : null,
+                        'contents' => fopen($filePath, 'r'),
                     ],
                     [
                         'name' => 'checked',
