@@ -18,18 +18,24 @@ class DocumentClient extends AbstractClient
     public const TEMP_NAME_PREFIX = '/tmpPhotoPrefix';
 
     /**
-     * @param int    $fileId
-     * @param string $tmpFileName
+     * @param int         $fileId
+     * @param string      $tmpFileName
+     * @param string|null $ratio
      *
      * @return string
      */
-    public function getFile(int $fileId, string $tmpFileName): string
+    public function getFile(int $fileId, string $tmpFileName, string $ratio = null): string
     {
+        if (null !== $ratio) {
+            $query = ['ratio' => $ratio];
+        }
+
         try {
             $this->request(
                 Request::METHOD_GET,
                 sprintf('api/files/%d', $fileId),
                 [
+                    'query' => $query ?? [],
                     RequestOptions::SINK => $tmpFileName,
                     RequestOptions::TIMEOUT => 30.0,
                 ]
@@ -49,7 +55,7 @@ class DocumentClient extends AbstractClient
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocument(string $objectId, string $type, string $identifier, string $filePath)
+    public function uploadDocument(string $objectId, string $type, string $identifier, string $filePath): void
     {
         try {
             $this->request(
@@ -82,25 +88,24 @@ class DocumentClient extends AbstractClient
     }
 
     /**
-     * @param string      $documentId
+     * @param int         $documentId
      * @param string      $ratio
      * @param string|null $filePath
+     * @param bool        $checked
      *
      * @throws FileCanNotBeSentException
      */
-    public function uploadDocumentCropped(string $documentId, string $ratio, string $filePath = null): void
+    public function uploadDocumentCropped(int $documentId, string $ratio, string $filePath = null, bool $checked = false): void
     {
         $multipart =
             [
-                'multipart' => [
-                    [
-                        'name' => 'documentId',
-                        'contents' => $documentId,
-                    ],
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio,
-                    ],
+                [
+                    'name' => 'documentId',
+                    'contents' => $documentId,
+                ],
+                [
+                    'name' => 'ratio',
+                    'contents' => $ratio,
                 ],
             ];
         if (null !== $filePath) {
@@ -108,7 +113,11 @@ class DocumentClient extends AbstractClient
                 [
                     [
                         'name' => 'rawDocument',
-                        'contents' => null === $filePath ? fopen($filePath, 'r') : null,
+                        'contents' => fopen($filePath, 'r'),
+                    ],
+                    [
+                        'name' => 'checked',
+                        'contents' => $checked,
                     ],
                 ]);
         }
@@ -117,7 +126,7 @@ class DocumentClient extends AbstractClient
             $this->request(
                 Request::METHOD_POST,
                 '/api/files/cropped.json',
-                $multipart
+                ['multipart' => $multipart]
             );
         } catch (HttpException $exception) {
             throw new FileCanNotBeSentException();

@@ -6,6 +6,7 @@ namespace Randock\VisaCenterApi\Client;
 
 use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
+use Randock\VisaCenterApi\Exception\FileCanNotBeSentException;
 
 class QueueClient extends AbstractClient
 {
@@ -15,10 +16,12 @@ class QueueClient extends AbstractClient
      *
      * @return array
      */
-    public function getPassportQueue(bool $revision = false, string $orderUuid = null)
+    public function getPassportQueue(bool $revision = false, string $orderUuid = null): array
     {
+        $query = ['revision' => $revision];
+
         if (null !== $orderUuid) {
-            $queryOrderUuid = ['orderUuid' => $orderUuid];
+            $query['orderUuid'] = $orderUuid;
         }
 
         try {
@@ -27,10 +30,7 @@ class QueueClient extends AbstractClient
                     Request::METHOD_GET,
                     '/api/queues/passport.json',
                     [
-                        'query' => array_merge(
-                            ['revision' => $revision],
-                            $queryOrderUuid ?? []
-                            ),
+                        'query' => $query,
                     ]
                 )
             );
@@ -42,14 +42,17 @@ class QueueClient extends AbstractClient
     }
 
     /**
+     * @param bool        $revision
      * @param string|null $orderUuid
      *
      * @return array
      */
-    public function getPhotoQueue(string $orderUuid = null): array
+    public function getPhotoQueue(bool $revision = false, string $orderUuid = null): array
     {
+        $query = ['revision' => $revision];
+
         if (null !== $orderUuid) {
-            $queryOrderUuid = ['orderUuid' => $orderUuid];
+            $query['orderUuid'] = $orderUuid;
         }
 
         try {
@@ -58,7 +61,7 @@ class QueueClient extends AbstractClient
                     Request::METHOD_GET,
                     '/api/queues/photo.json',
                     [
-                        'query' => $queryOrderUuid ?? [],
+                        'query' => $query,
                     ]
                 )
             );
@@ -93,7 +96,7 @@ class QueueClient extends AbstractClient
      * @param string $identifier
      * @param array  $revisionChanges
      */
-    public function approvePassport(string $traveler, string $identifier, array $revisionChanges = [])
+    public function approvePassport(string $traveler, string $identifier, array $revisionChanges = []): void
     {
         try {
             $this->request(
@@ -121,7 +124,7 @@ class QueueClient extends AbstractClient
      * @param string $identifier
      * @param string $passport
      */
-    public function validatePassport(string $traveler, string $identifier, string $passport)
+    public function validatePassport(string $traveler, string $identifier, string $passport): void
     {
         try {
             $this->request(
@@ -149,7 +152,7 @@ class QueueClient extends AbstractClient
      * @param string $identifier
      * @param string $photo
      */
-    public function cropPhoto(string $traveler, string $identifier, string $photo)
+    public function cropPhoto(string $traveler, string $identifier, string $photo): void
     {
         try {
             $this->request(
@@ -169,6 +172,25 @@ class QueueClient extends AbstractClient
             return;
         } catch (HttpException $exception) {
             throw $exception;
+        }
+    }
+
+    /**
+     * @param array $documentsToBeApproved
+     *
+     * @throws FileCanNotBeSentException
+     */
+    public function approveDocumentsCrop(array $documentsToBeApproved): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                '/api/queues/photo/approve/crop.json',
+                ['json' => ['documents' => $documentsToBeApproved],
+                ]
+            );
+        } catch (HttpException $exception) {
+            throw new FileCanNotBeSentException();
         }
     }
 }
