@@ -24,7 +24,7 @@ class OrderIssueClient extends AbstractClient
         try {
             $response = $this->toStdClass($this->request(
                 Request::METHOD_GET,
-                sprintf('/api/orders/%s/issues.json', $orderId)
+                \sprintf('/api/orders/%s/issues.json', $orderId)
             ));
         } catch (HttpException $exception) {
             throw new OrderNotFoundException();
@@ -45,7 +45,7 @@ class OrderIssueClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/orders/%s/custom/issue/send.json', $orderId),
+                \sprintf('/api/orders/%s/custom/issue/send.json', $orderId),
                 [
                     'json' => [
                         'message' => $message,

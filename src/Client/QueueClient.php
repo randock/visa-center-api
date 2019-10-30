@@ -101,7 +101,7 @@ class QueueClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf(
+                \sprintf(
                     '/api/queues/passport/%s.json',
                     $traveler
                 ),
@@ -129,7 +129,7 @@ class QueueClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf(
+                \sprintf(
                     '/api/queues/passport/validate/%s.json',
                     $traveler
                 ),
@@ -157,7 +157,7 @@ class QueueClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf(
+                \sprintf(
                     '/api/queues/photo/%s.json',
                     $traveler
                 ),

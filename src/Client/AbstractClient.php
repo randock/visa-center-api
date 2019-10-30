@@ -28,7 +28,7 @@ abstract class AbstractClient extends CommonAbstractClient
     ) {
         $options = [
             'headers' => [
-                'Accept' => sprintf(
+                'Accept' => \sprintf(
                     'application/json;version=%s',
                     $apiVersion
                 ),
@@ -78,6 +78,6 @@ abstract class AbstractClient extends CommonAbstractClient
      */
     public function toStdClass(ResponseInterface $response): \stdClass
     {
-        return json_decode($response->getBody()->getContents());
+        return \json_decode($response->getBody()->getContents());
     }
 }

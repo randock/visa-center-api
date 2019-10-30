@@ -23,7 +23,8 @@
   "prefer-stable": true,
   "require": {
     "randock/utils": "^0.0.2",
-    "randock/value-object": "^0.0.9"
+    "randock/value-object": "^0.0.9",
+    "randock/build": "*"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.4",

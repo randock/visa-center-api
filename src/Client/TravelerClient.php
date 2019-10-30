@@ -20,7 +20,7 @@ class TravelerClient extends AbstractClient
         try {
             $response = $this->request(
                 'DELETE',
-                sprintf(
+                \sprintf(
                     '/api/travelers/%s.json',
                     $uuid
                 )
@@ -48,7 +48,7 @@ class TravelerClient extends AbstractClient
             $traveler = $this->toStdClass(
                 $this->request(
                     'GET',
-                    sprintf(
+                    \sprintf(
                         '/api/travelers/%s.json',
                         $uuid
                     )

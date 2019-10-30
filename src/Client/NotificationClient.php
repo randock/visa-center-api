@@ -29,7 +29,7 @@ class NotificationClient extends AbstractClient
             ],
         ];
 
-        $options['query'] = array_merge($options['query'], $queryParams);
+        $options['query'] = \array_merge($options['query'], $queryParams);
         $response = new CollectionApiResponse(
             $this->toStdClass(
                 $this->request(
@@ -79,7 +79,7 @@ class NotificationClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_PATCH,
-                sprintf(
+                \sprintf(
                     '/api/notifications/%d/read.json',
                     $notificationId
                 )

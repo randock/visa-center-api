@@ -94,7 +94,7 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
      */
     public function current()
     {
-        return current($this->responseData->_embedded->items);
+        return \current($this->responseData->_embedded->items);
     }
 
     /**
@@ -105,7 +105,7 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
      */
     public function next(): void
     {
-        if (!next($this->responseData->_embedded->items) && $this->fetchMore) {
+        if (!\next($this->responseData->_embedded->items) && $this->fetchMore) {
             if ($this->getPage() < $this->getPages()) {
                 $this->responseData = $this->client->requestLink($this->getLinks()->next->href);
                 $this->rewind();
@@ -124,7 +124,7 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
      */
     public function key()
     {
-        return key($this->responseData->_embedded->items);
+        return \key($this->responseData->_embedded->items);
     }
 
     /**
@@ -139,7 +139,7 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
      */
     public function valid(): bool
     {
-        return null !== key($this->responseData->_embedded->items);
+        return null !== \key($this->responseData->_embedded->items);
     }
 
     /**
@@ -150,6 +150,6 @@ class CollectionApiResponse extends VisaCenterApiResponse implements \Iterator
      */
     public function rewind(): void
     {
-        reset($this->responseData->_embedded->items);
+        \reset($this->responseData->_embedded->items);
     }
 }

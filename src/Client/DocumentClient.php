@@ -38,7 +38,7 @@ class DocumentClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_GET,
-                sprintf('api/files/%d', $fileId),
+                \sprintf('api/files/%d', $fileId),
                 [
                     'query' => $query ?? [],
                     RequestOptions::SINK => $tmpFileName,
@@ -82,7 +82,7 @@ class DocumentClient extends AbstractClient
                         ],
                         [
                             'name' => 'rawDocument',
-                            'contents' => fopen($filePath, 'r'),
+                            'contents' => \fopen($filePath, 'r'),
                         ],
                     ],
                 ]
@@ -116,7 +116,7 @@ class DocumentClient extends AbstractClient
             ];
 
         if (null !== $minWidth) {
-            $multipart = array_merge($multipart,
+            $multipart = \array_merge($multipart,
                 [
                     [
                         'name' => 'minWidth',
@@ -126,11 +126,11 @@ class DocumentClient extends AbstractClient
         }
 
         if (null !== $filePath) {
-            $multipart = array_merge($multipart,
+            $multipart = \array_merge($multipart,
                 [
                     [
                         'name' => 'rawDocument',
-                        'contents' => fopen($filePath, 'r'),
+                        'contents' => \fopen($filePath, 'r'),
                     ],
                     [
                         'name' => 'checked',
@@ -159,7 +159,7 @@ class DocumentClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('api/files/reject/%d', $documentId),
+                \sprintf('api/files/reject/%d', $documentId),
                 [
                     'json' => [
                         'issue' => $issue,

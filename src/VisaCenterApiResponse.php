@@ -33,8 +33,8 @@ class VisaCenterApiResponse
      */
     public function __call(string $name, array $arguments)
     {
-        if ('get' === substr($name, 0, 3)) {
-            $key = lcfirst(substr($name, 3));
+        if ('get' === \substr($name, 0, 3)) {
+            $key = \lcfirst(\substr($name, 3));
 
             return $this->__get($key);
         }

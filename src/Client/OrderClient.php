@@ -55,15 +55,15 @@ class OrderClient extends AbstractClient
             'query' => [
                 'page' => $page,
                 'limit' => $limit,
-                'orderParameter' => array_keys($sort),
-                'orderValue' => array_values($sort),
+                'orderParameter' => \array_keys($sort),
+                'orderValue' => \array_values($sort),
                 'filterParam' => $filterParams,
                 'filterValue' => $filterValues,
                 'filterOp' => $filterOperators,
             ],
         ];
 
-        $options['query'] = array_merge($options['query'], $queryParams);
+        $options['query'] = \array_merge($options['query'], $queryParams);
 
         $response = new CollectionApiResponse(
             $this->toStdClass(
@@ -94,7 +94,7 @@ class OrderClient extends AbstractClient
             $order = $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
-                    sprintf(
+                    \sprintf(
                         '/api/orders/%s.json',
                         $orderUuid
                     )
@@ -125,7 +125,7 @@ class OrderClient extends AbstractClient
             $order = $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
-                    sprintf(
+                    \sprintf(
                         '/api/orders/by-order-id/%s.json',
                         $orderId
                     )
@@ -185,7 +185,7 @@ class OrderClient extends AbstractClient
                 ]
             );
 
-            return json_decode($response->getBody()->getContents(), true);
+            return \json_decode($response->getBody()->getContents(), true);
         } catch (HttpException $exception) {
             throw $exception;
         }
@@ -208,8 +208,8 @@ class OrderClient extends AbstractClient
             'query' => [
                 'page' => $page,
                 'limit' => $limit,
-                'orderParameter' => array_keys($sort),
-                'orderValue' => array_values($sort),
+                'orderParameter' => \array_keys($sort),
+                'orderValue' => \array_values($sort),
             ],
         ];
 
@@ -218,7 +218,7 @@ class OrderClient extends AbstractClient
                 $this->toStdClass(
                     $this->request(
                         Request::METHOD_GET,
-                        sprintf(
+                        \sprintf(
                             '/api/orders/%s/comments.json',
                             $orderUuid,
                             $options
@@ -249,7 +249,7 @@ class OrderClient extends AbstractClient
         try {
             $response = $this->request(
                 Request::METHOD_POST,
-                sprintf(
+                \sprintf(
                     '/api/orders/%s/comments.json',
                     $uuid
                 ),
@@ -268,7 +268,7 @@ class OrderClient extends AbstractClient
                 throw new OrderNotFoundException();
             } elseif (400 === $exception->getStatusCode()) {
                 throw new OrderCommentContainsErrorException(
-                    json_decode($exception->getBody())->errors
+                    \json_decode($exception->getBody())->errors
                 );
             }
         }
@@ -298,7 +298,7 @@ class OrderClient extends AbstractClient
                 ]
             );
 
-            $orderUrlVisaCenter = parse_url($response->getHeaders()['Location'][0]);
+            $orderUrlVisaCenter = \parse_url($response->getHeaders()['Location'][0]);
 
             return UuidUtils::getUuidFromString($orderUrlVisaCenter['path']);
         } catch (HttpException $exception) {
@@ -322,7 +322,7 @@ class OrderClient extends AbstractClient
     public function updateOrder(array $order): void
     {
         try {
-            $this->request(Request::METHOD_PATCH, sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
+            $this->request(Request::METHOD_PATCH, \sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
         } catch (HttpException $exception) {
             if (400 === $exception->getStatusCode()) {
                 throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
@@ -346,7 +346,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/orders/%s/status.json', $uuid),
+                \sprintf('/api/orders/%s/status.json', $uuid),
                 [
                     'json' => [
                         'status' => $status,
@@ -367,7 +367,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/orders/%s/force/status/error.json', $uuid)
+                \sprintf('/api/orders/%s/force/status/error.json', $uuid)
             );
         } catch (HttpException $e) {
             throw new OrderContainsErrorsException((int) $e->getStatusCode(), $e->getBody(), $e->getMessage());
@@ -383,7 +383,7 @@ class OrderClient extends AbstractClient
     {
         return $this->request(
             Request::METHOD_GET,
-            sprintf('/api/emails/%d', $id),
+            \sprintf('/api/emails/%d', $id),
             [
                 'stream' => true,
             ]
@@ -400,7 +400,7 @@ class OrderClient extends AbstractClient
     {
         return $this->request(
             Request::METHOD_GET,
-            sprintf('/api/pdfs/%d', $id),
+            \sprintf('/api/pdfs/%d', $id),
             [
                 'sink' => $file,
             ]
@@ -417,7 +417,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_DELETE,
-                sprintf('/api/pdfs/%d', $id)
+                \sprintf('/api/pdfs/%d', $id)
             );
         } catch (HttpException $exception) {
             if (404 === $exception->getStatusCode()) {
@@ -437,7 +437,7 @@ class OrderClient extends AbstractClient
         try {
             $response = $this->toStdClass($this->request(
                 Request::METHOD_GET,
-                sprintf('/api/orders/%s/documents.json', $orderId)
+                \sprintf('/api/orders/%s/documents.json', $orderId)
             ));
         } catch (HttpException $exception) {
             throw $exception;
@@ -456,7 +456,7 @@ class OrderClient extends AbstractClient
         try {
             $response = $this->toStdClass($this->request(
                 Request::METHOD_GET,
-                sprintf('/api/orders/%s/all/documents.json', $orderUuid)
+                \sprintf('/api/orders/%s/all/documents.json', $orderUuid)
             ));
         } catch (HttpException $exception) {
             throw $exception;
@@ -479,7 +479,7 @@ class OrderClient extends AbstractClient
             return $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
-                    sprintf(
+                    \sprintf(
                         '/api/orders/%s/reusable-data.json',
                         $orderUuid
                     ),
@@ -505,7 +505,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf(
+                \sprintf(
                     '/api/orders/%s/gov-registration.json',
                     $orderUuid
                 ),
@@ -533,7 +533,7 @@ class OrderClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf(
+                \sprintf(
                     '/api/orders/%s/validate-gov-registration.json',
                     $orderUuid
                 ),
@@ -611,7 +611,7 @@ class OrderClient extends AbstractClient
                     'json' => ['uuids' => $orderUuidList],
                 ]
             );
-        $ordersStatuses = json_decode($response->getBody()->getContents());
+        $ordersStatuses = \json_decode($response->getBody()->getContents());
 
         $mappedOrdersStatuses = [];
         foreach ($ordersStatuses as $orderStatus) {
@@ -636,7 +636,7 @@ class OrderClient extends AbstractClient
                     'json' => ['uuids' => $orderUuidList],
                 ]
             );
-        $orders = json_decode($response->getBody()->getContents());
+        $orders = \json_decode($response->getBody()->getContents());
 
         $mappedOrders = [];
         foreach ($orders as $order) {
@@ -659,7 +659,7 @@ class OrderClient extends AbstractClient
             return $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
-                    sprintf(
+                    \sprintf(
                         '/api/orders/%s/processing-date.json',
                         $orderUuid
                     )
@@ -694,7 +694,7 @@ class OrderClient extends AbstractClient
                 ]
             );
 
-            $contents = json_decode($response->getBody()->getContents());
+            $contents = \json_decode($response->getBody()->getContents());
             $mappedData = [];
 
             foreach ($contents as $data) {

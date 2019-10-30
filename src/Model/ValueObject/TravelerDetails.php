@@ -42,8 +42,8 @@ class TravelerDetails extends DynamicObjectStorage
     {
         if (\in_array($this->getNationality(), ['DE', 'NL', 'BE'])) {
             if (null !== $this->getPassport() && null !== $this->getPassport()->getPassportNumber()) {
-                $passportNumber = strtoupper($this->getPassport()->getPassportNumber());
-                $this->getPassport()->setPassportNumber(str_replace('O', '0', $passportNumber));
+                $passportNumber = \strtoupper($this->getPassport()->getPassportNumber());
+                $this->getPassport()->setPassportNumber(\str_replace('O', '0', $passportNumber));
             }
         }
     }

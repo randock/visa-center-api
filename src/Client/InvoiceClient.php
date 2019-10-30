@@ -21,7 +21,7 @@ class InvoiceClient extends AbstractClient
     {
         return $this->request(
             Request::METHOD_GET,
-            sprintf('/api/invoices/%s/pdf.json', $invoiceId),
+            \sprintf('/api/invoices/%s/pdf.json', $invoiceId),
             [
                 'sink' => $file,
             ]
@@ -62,7 +62,7 @@ class InvoiceClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_POST,
-                sprintf('/api/invoices/%s/orders/%s/pdf/send.json', $invoiceId, $orderUuid)
+                \sprintf('/api/invoices/%s/orders/%s/pdf/send.json', $invoiceId, $orderUuid)
             );
         } catch (HttpException $exception) {
             if (500 === $exception->getStatusCode()) {
