@@ -149,4 +149,25 @@ class DocumentClient extends AbstractClient
             throw new FileCanNotBeSentException();
         }
     }
+
+    /**
+     * @param int    $documentId
+     * @param string $issue
+     */
+    public function rejectDocument(int $documentId, string $issue): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                sprintf('api/files/reject/%d', $documentId),
+                [
+                    'json' => [
+                        'issue' => $issue,
+                    ],
+                ]
+            );
+        } catch (HttpException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+    }
 }
