@@ -24,7 +24,7 @@ class TravelerTest extends TestCase
 
     public static function getStdClassObject()
     {
-        return json_decode('{
+        return \json_decode('{
             "applicationId": 34611,
             "uuid": "c04d1228-08df-4abb-a631-ca519f865811",
             "lastname": "kemeling",

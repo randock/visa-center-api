@@ -25,7 +25,7 @@ class TransactionClient extends AbstractClient
     {
         try {
             return $this->getByResource(
-                sprintf(
+                \sprintf(
                     '/api/orders/%s/transactions/%s.json',
                     $orderUuid,
                     $transactionUuid
@@ -49,7 +49,7 @@ class TransactionClient extends AbstractClient
         try {
             $transactionResource = $this->request(
                 'POST',
-                sprintf(
+                \sprintf(
                     '/api/orders/%s/transactions.json',
                     $orderUuid
                 ),
@@ -57,7 +57,7 @@ class TransactionClient extends AbstractClient
                     'json' => $transactionData,
                 ]
             );
-            $transactionUrlVisaCenter = parse_url(
+            $transactionUrlVisaCenter = \parse_url(
                 $transactionResource->getHeaders()['Location'][0]
             );
 
@@ -83,7 +83,7 @@ class TransactionClient extends AbstractClient
                 $this->toStdClass(
                     $this->request(
                         'PATCH',
-                        sprintf(
+                        \sprintf(
                             '/api/orders/%s/transactions/%s.json',
                             $orderUuid,
                             $transactionUuid

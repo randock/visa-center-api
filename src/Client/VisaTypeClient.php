@@ -37,7 +37,7 @@ class VisaTypeClient extends AbstractClient
             ],
         ];
 
-        $options['query'] = array_merge($options['query'], $queryParams);
+        $options['query'] = \array_merge($options['query'], $queryParams);
         $data = $this->toStdClass(
             $this->request(
                 Request::METHOD_GET,
@@ -77,7 +77,7 @@ class VisaTypeClient extends AbstractClient
             $visaType = $this->toStdClass(
                 $this->request(
                     Request::METHOD_GET,
-                    sprintf(
+                    \sprintf(
                         '/api/visatypes/%d.json',
                         $id
                     )
@@ -112,7 +112,7 @@ class VisaTypeClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_PATCH,
-                sprintf(
+                \sprintf(
                     '/api/visatypes/%d.json',
                     $id
                 ),
@@ -159,7 +159,7 @@ class VisaTypeClient extends AbstractClient
 
             // id
             $location = $response->getHeader('Location')[0];
-            preg_match('/visatypes\/(\d+)/', $location, $matches);
+            \preg_match('/visatypes\/(\d+)/', $location, $matches);
             $id = (int) $matches[1];
 
             // return the visaType
@@ -184,7 +184,7 @@ class VisaTypeClient extends AbstractClient
         try {
             $this->request(
                 Request::METHOD_DELETE,
-                sprintf(
+                \sprintf(
                     '/api/visatypes/%d.json',
                     $id
                 )

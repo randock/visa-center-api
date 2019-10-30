@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a90e78299af80d40ed01c9ffa01fad7",
+    "content-hash": "961eb08a04a14ee5bc52773f3bb8eb4c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1325,6 +1325,28 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "randock/build",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/randock/build.git",
+                "reference": "bdb5900b77cdd45430d56348688180bd36a4fed0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/randock/build/zipball/bdb5900b77cdd45430d56348688180bd36a4fed0",
+                "reference": "bdb5900b77cdd45430d56348688180bd36a4fed0",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Randock Build",
+            "time": "2019-06-11T13:30:11+00:00"
         },
         {
             "name": "randock/event",

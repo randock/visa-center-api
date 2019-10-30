@@ -46,7 +46,7 @@ class OrderTest extends TestCase
 
     public static function getStdClassObject()
     {
-        return json_decode('{
+        return \json_decode('{
     "orderDetails": {
         "urgent": {
             "urgentProcessing": true

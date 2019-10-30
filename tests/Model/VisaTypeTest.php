@@ -130,7 +130,7 @@ class VisaTypeTest extends TestCase
 
     public static function getStdClassObject()
     {
-        return json_decode('[{
+        return \json_decode('[{
                 "id": 1,
                 "nationality": {"isoCode": "NL"},
                 "price": {
