@@ -391,6 +391,17 @@ class OrderClient extends AbstractClient
     }
 
     /**
+     * @param int $id
+     */
+    public function republishLostEmail(int $id): void
+    {
+        $this->request(
+            Request::METHOD_POST,
+            \sprintf('/api/emails/%d/send-lost', $id)
+        );
+    }
+
+    /**
      * @param int   $id
      * @param mixed $file
      *
