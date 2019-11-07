@@ -717,4 +717,14 @@ class OrderClient extends AbstractClient
             throw new OrderNotFoundException();
         }
     }
+
+    public function getOrdersWithNotHandledDocumentIssues()
+    {
+        $response = $this->request(
+            Request::METHOD_GET,
+            '/api/orders/document-issues'
+        );
+
+        return \json_decode($response->getBody()->getContents());
+    }
 }
