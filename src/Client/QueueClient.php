@@ -103,6 +103,28 @@ class QueueClient extends AbstractClient
     }
 
     /**
+     * @param int $documentId
+     */
+    public function forcePassportCropRevision(int $documentId): void
+    {
+        try {
+            $this->request(
+                Request::METHOD_POST,
+                '/api/queues/passport/force-crop-revision.json',
+                [
+                    'json' => [
+                        'documentId' => $documentId,
+                    ],
+                ]
+            );
+
+            return;
+        } catch (HttpException $exception) {
+            throw $exception;
+        }
+    }
+
+    /**
      * @param array $documentsToBeApproved
      *
      * @throws FileCanNotBeSentException
