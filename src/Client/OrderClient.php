@@ -295,6 +295,7 @@ class OrderClient extends AbstractClient
                         'visaType' => $order['visaTypeId'],
                         'domainName' => $order['domainName'],
                     ],
+                    'timeout' => 60,
                 ]
             );
 
@@ -322,7 +323,17 @@ class OrderClient extends AbstractClient
     public function updateOrder(array $order): void
     {
         try {
-            $this->request(Request::METHOD_PATCH, \sprintf('/api/orders/%s.json', $order['orderUuid']), ['json' => $order['order'], 'query' => ['locale' => $order['locale']]]);
+            $this->request(
+                Request::METHOD_PATCH,
+                \sprintf('/api/orders/%s.json', $order['orderUuid']),
+                [
+                    'json' => $order['order'],
+                    'query' => [
+                            'locale' => $order['locale'],
+                        ],
+                    'timeout' => 60,
+                ]
+            );
         } catch (HttpException $exception) {
             if (400 === $exception->getStatusCode()) {
                 throw new OrderContainsErrorsException((int) $exception->getStatusCode(), $exception->getBody(), $exception->getMessage());
