@@ -22,6 +22,7 @@ class Order
     public const STATUS_RECEIVED_FROM_EMBASSY = 'received_from_embassy';
     public const STATUS_DELETED = 'deleted';
     public const STATUS_PROCESSED = 'processed';
+    public const STATUS_UNPROCESSABLE = 'unprocessable';
 
     /**
      * @var string
