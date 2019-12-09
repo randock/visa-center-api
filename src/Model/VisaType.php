@@ -49,6 +49,11 @@ class VisaType
     private $maxDeliveryTime;
 
     /**
+     * @var bool
+     */
+    private $exempt;
+
+    /**
      * @var string|null
      */
     private $alias;
@@ -63,6 +68,7 @@ class VisaType
      * @param Country     $country
      * @param int         $averageDeliveryTime
      * @param int         $maxDeliveryTime
+     * @param bool        $exempt
      * @param string|null $visaForm
      * @param string|null $alias
      */
@@ -74,6 +80,7 @@ class VisaType
         Country $country,
         int $averageDeliveryTime,
         int $maxDeliveryTime,
+        bool $exempt,
         ?string $visaForm = null,
         ?string $alias = null
     ) {
@@ -84,6 +91,7 @@ class VisaType
         $this->country = $country;
         $this->averageDeliveryTime = $averageDeliveryTime;
         $this->maxDeliveryTime = $maxDeliveryTime;
+        $this->exempt = $exempt;
         $this->visaForm = $visaForm;
         $this->alias = $alias;
     }
@@ -111,6 +119,7 @@ class VisaType
             ),
             $data->averageDeliveryTime,
             $data->maxDeliveryTime,
+            $data->exempt,
             $data->visaForm,
             $data->alias
         );
@@ -180,6 +189,14 @@ class VisaType
     public function getMaxDeliveryTime(): int
     {
         return $this->maxDeliveryTime;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExempt(): bool
+    {
+        return $this->exempt;
     }
 
     /**
