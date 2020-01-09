@@ -631,6 +631,7 @@ class OrderClient extends AbstractClient
                 '/api/orders/statuses.json',
                 [
                     'json' => ['uuids' => $orderUuidList],
+                    'timeout' => 60,
                 ]
             );
         $ordersStatuses = \json_decode($response->getBody()->getContents());
