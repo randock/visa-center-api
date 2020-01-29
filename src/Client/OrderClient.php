@@ -105,7 +105,7 @@ class OrderClient extends AbstractClient
                 $order = Order::fromStdClass($order);
             }
 
-            if(null===$order){
+            if (null === $order) {
                 throw new OrderNotFoundException();
             }
 

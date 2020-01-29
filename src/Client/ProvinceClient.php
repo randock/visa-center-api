@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Randock\VisaCenterApi\Client;
 
+use Symfony\Component\HttpFoundation\Request;
 use Randock\Utils\Http\Exception\HttpException;
 use Randock\VisaCenterApi\Exception\ProvincesNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProvinceClient extends AbstractClient
 {
     /**
      * @param string $countryCode
      *
-     * @return \stdClass
      * @throws ProvincesNotFoundException
+     *
+     * @return \stdClass
      */
     public function getProvinces(string $countryCode): \stdClass
     {
@@ -29,15 +30,13 @@ class ProvinceClient extends AbstractClient
                 $options
             ));
 
-            if(null===$provinces){
+            if (null === $provinces) {
                 throw new ProvincesNotFoundException();
             }
 
             return $provinces;
-            
         } catch (HttpException $exception) {
             throw new ProvincesNotFoundException();
         }
-
     }
 }
