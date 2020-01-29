@@ -105,6 +105,10 @@ class OrderClient extends AbstractClient
                 $order = Order::fromStdClass($order);
             }
 
+            if(null===$order){
+                throw new OrderNotFoundException();
+            }
+
             return $order;
         } catch (HttpException $exception) {
             throw new OrderNotFoundException();
@@ -220,9 +224,9 @@ class OrderClient extends AbstractClient
                         Request::METHOD_GET,
                         \sprintf(
                             '/api/orders/%s/comments.json',
-                            $orderUuid,
-                            $options
-                        )
+                            $orderUuid
+                        ),
+                        $options
                     )
                 ),
                 $this,
@@ -271,6 +275,7 @@ class OrderClient extends AbstractClient
                     \json_decode($exception->getBody())->errors
                 );
             }
+            throw $exception;
         }
     }
 
