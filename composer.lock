@@ -1332,12 +1332,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/randock/build.git",
-                "reference": "bdb5900b77cdd45430d56348688180bd36a4fed0"
+                "reference": "ae7818e57d53f6759dc449d50d7f05d43941853c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/randock/build/zipball/bdb5900b77cdd45430d56348688180bd36a4fed0",
-                "reference": "bdb5900b77cdd45430d56348688180bd36a4fed0",
+                "url": "https://api.github.com/repos/randock/build/zipball/ae7818e57d53f6759dc449d50d7f05d43941853c",
+                "reference": "ae7818e57d53f6759dc449d50d7f05d43941853c",
                 "shasum": ""
             },
             "type": "library",
@@ -1346,7 +1346,7 @@
                 "MIT"
             ],
             "description": "Randock Build",
-            "time": "2019-06-11T13:30:11+00:00"
+            "time": "2020-01-21T13:11:08+00:00"
         },
         {
             "name": "randock/event",
@@ -2058,7 +2058,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3362,8 +3362,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "The PHP Unit Testing framework.",

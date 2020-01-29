@@ -1,0 +1,12 @@
+parameters:
+    bootstrap: %currentWorkingDirectory%/vendor/autoload.php
+    autoload_directories:
+        - %currentWorkingDirectory%/src
+    excludes_analyse:
+        - %currentWorkingDirectory%/var
+        - %currentWorkingDirectory%/vendor
+        - %currentWorkingDirectory%/web
+        - %currentWorkingDirectory%/bin
+        - %currentWorkingDirectory%/app
+    ignoreErrors:
+        - '#Call to an undefined static method Randock\\VisaCenterApi\\VisaCenterApiResponse::get#'
