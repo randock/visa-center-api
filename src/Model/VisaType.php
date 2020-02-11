@@ -59,6 +59,11 @@ class VisaType
     private $alias;
 
     /**
+     * @var string|null
+     */
+    private $regularCountry;
+
+    /**
      * VisaType constructor.
      *
      * @param int         $id
@@ -71,6 +76,7 @@ class VisaType
      * @param bool        $exempt
      * @param string|null $visaForm
      * @param string|null $alias
+     * @param string|null $regularCountry
      */
     private function __construct(
         int $id,
@@ -82,7 +88,8 @@ class VisaType
         int $maxDeliveryTime,
         bool $exempt,
         ?string $visaForm = null,
-        ?string $alias = null
+        ?string $alias = null,
+        ?string $regularCountry = null
     ) {
         $this->id = $id;
         $this->visaTypeNationalities = $visaTypeNationalities;
@@ -94,6 +101,7 @@ class VisaType
         $this->exempt = $exempt;
         $this->visaForm = $visaForm;
         $this->alias = $alias;
+        $this->regularCountry = $regularCountry;
     }
 
     /**
@@ -109,7 +117,7 @@ class VisaType
             $visaTypeNationalities[] = VisaTypeNationality::fromStdClass($nationality);
         }
 
-        $visaType = new self(
+        return new self(
             $data->id,
             $visaTypeNationalities,
             $data->type,
@@ -121,10 +129,9 @@ class VisaType
             $data->maxDeliveryTime,
             $data->exempt,
             $data->visaForm,
-            $data->alias
+            $data->alias,
+            $data->regularCountry
         );
-
-        return $visaType;
     }
 
     /**
@@ -205,5 +212,13 @@ class VisaType
     public function getAlias(): ?string
     {
         return $this->alias;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRegularCountry(): ?string
+    {
+        return $this->regularCountry;
     }
 }
