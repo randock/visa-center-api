@@ -215,6 +215,8 @@ class VisaTypeTest extends TestCase
         $class->averageDeliveryTime = self::AVERAGE_DELIVERY_TIME;
         $class->maxDeliveryTime = self::MAX_DELIVERY_TIME;
         $class->alias = self::ALIAS;
+        $class->exempt = false;
+        $class->regularCountry = null;
 
         return VisaType::fromStdClass(
             $class

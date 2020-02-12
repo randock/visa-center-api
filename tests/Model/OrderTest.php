@@ -167,6 +167,7 @@ class OrderTest extends TestCase
         "maxDeliveryTime": 24,
         "averageDeliveryTime": 4,
         "exempt": false,
+        "regularCountry": null,
         "alias": "TR_TOURISM",
         "publicAlias": null,
         "updatedAt": "2018-07-12T12:27:14+00:00"
